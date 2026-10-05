@@ -5,8 +5,6 @@ Archit Singla · Abhinav Sagar
 
 Creator demos become suitability-matched proof on the Meesho PDP, scaled across clusters with AI, and paid on delivered conversions. This is a clickable version of our Round 2 deck: the shopper's PDP, the creator programme, the brand coverage matrix and the attribution ledger, running end to end on mock data.
 
-**Live demo:** https://itsarchitsingla.github.io/meri-jaisi-prototype/ ← replace after enabling GitHub Pages (steps below)
-
 ![Shopper view: the Meesho PDP with the Meri Jaisi module at the shade selector, and the gate trace beside it](screenshots/shopper.png)
 
 ## Two-minute walkthrough for judges
