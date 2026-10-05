@@ -46,14 +46,7 @@ One deliberate change from the deck's static mock on slide 6: the module never s
 
 ## Run it
 
-Open `index.html` in any browser. No build step, no dependencies, one file. The only network request is the Mukta web font; without it the page falls back to the system font.
-
-## Deploy to GitHub Pages
-
-1. Create a public repository, for example `meri-jaisi-prototype`.
-2. Upload `index.html`, `README.md` and the `screenshots/` folder (or `git push` this folder).
-3. In the repository, open **Settings → Pages**. Under **Build and deployment**, set Source to **Deploy from a branch**, pick `main` and `/ (root)`, and save.
-4. After a minute the site is live at `https://YOUR-USERNAME.github.io/meri-jaisi-prototype/`. Paste that link at the top of this README and in the submission form.
+Open `index.html` in any browser. No build step or dependencies are required.
 
 ## Repository layout
 
@@ -63,6 +56,3 @@ README.md             this file
 screenshots/          images used above
 ```
 
-## What v1 adds (not in this prototype)
-
-Per slide 10: AI creator tagging from reels and audio, reel → cluster mapping service with human review on low confidence, learning-to-rank on delivered-not-returned conversion, the attribution ledger as a service, creator-approved dubbing into 8 languages, and the Shade-Coverage dashboard wired to live PDP-view data. v0, which this prototype represents, needs none of that: a PDP widget pointing at Video Finds, a tagging sheet and a weekly manual payout run.
