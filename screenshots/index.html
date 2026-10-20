@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meri Jaisi Proof Layer — interactive prototype</title>
+<meta name="description" content="Clickable prototype of the Meri Jaisi Proof Layer: creator demos matched to the shopper on a mock Meesho PDP, with tier-wise capture, gate logic, creator programme, brand coverage matrix and attribution ledger.">
+<meta property="og:title" content="Meri Jaisi Proof Layer · interactive prototype">
+<meta property="og:description" content="Creator demos become suitability-matched proof on the Meesho PDP, matched on skin tone, skin type or hair type, and paid only on delivered conversions.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://itsarchitsingla.github.io/meri-jaisi-prototype/">
+<meta property="og:image" content="https://itsarchitsingla.github.io/meri-jaisi-prototype/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Meri Jaisi Proof Layer · interactive prototype">
+<meta name="twitter:description" content="Creator demos become suitability-matched proof on the Meesho PDP, matched on skin tone, skin type or hair type, and paid only on delivered conversions.">
+<meta name="twitter:image" content="https://itsarchitsingla.github.io/meri-jaisi-prototype/img/og.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%238d1a73'/%3E%3Ctext x='32' y='42' font-family='Arial,Helvetica,sans-serif' font-size='27' font-weight='700' fill='white' text-anchor='middle'%3EMJ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --plum:#8d1a73; --plum-deep:#4b1340; --plum-soft:#f6e8f3;
+  --ink:#2a1626; --muted:#6f5d6b; --line:#e4d8e1; --bg:#f6f2f7; --paper:#fff;
+  --teal:#0d8a95; --teal-soft:#e2f3f5;
+  --pink:#dc3178; --pink-soft:#fde6ef;
+  --orange:#e07b22; --orange-soft:#fdeedd;
+  --green:#1f8f4e; --green-soft:#e1f4e8;
+  --red:#cf3b33; --red-soft:#fbe4e2;
+  --amber:#d99a06; --amber-soft:#fdf3cf;
+  --r:10px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Mukta',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.5}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+button:focus-visible,select:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+select,input{font:inherit;color:inherit}
+h1,h2,h3,h4{margin:0;line-height:1.2}
+p{margin:0}
+a{color:var(--plum)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- page chrome ---------- */
+.top{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:flex-end;justify-content:space-between;padding:28px 32px 10px;max-width:1320px;margin:0 auto}
+.brand-title{font-size:32px;font-weight:700;letter-spacing:-.015em;color:var(--plum-deep)}
+.brand-sub{color:var(--muted);margin-top:2px;max-width:70ch}
+.tabs{display:flex;gap:4px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:4px}
+.tab{border-radius:999px;padding:8px 18px;font-weight:600;color:var(--muted)}
+.tab.is-on{color:#fff}
+.tab[data-view=shopper].is-on{background:var(--teal)}
+.tab[data-view=creator].is-on{background:var(--pink)}
+.tab[data-view=brand].is-on{background:var(--orange)}
+.tab[data-view=ledger].is-on{background:var(--plum)}
+.notice{max-width:1320px;margin:0 auto;padding:0 32px 14px;color:var(--muted);font-size:14px}
+main{max-width:1320px;margin:0 auto;padding:6px 32px 40px}
+.view{display:grid;gap:28px}
+.view[hidden]{display:none}
+.view>*,.stack>*,.panel{min-width:0}
+#v-shopper{grid-template-columns:392px minmax(0,1fr);align-items:start}
+.two-col{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+.stack{display:grid;gap:20px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.panel h2{font-size:19px;font-weight:700;color:var(--plum-deep);margin-bottom:4px}
+.panel h3{font-size:16px;font-weight:700;margin:16px 0 6px}
+.panel .lead{color:var(--muted);font-size:14px;margin-bottom:12px}
+.role-teal{border-top:4px solid var(--teal)}
+.role-pink{border-top:4px solid var(--pink)}
+.role-orange{border-top:4px solid var(--orange)}
+.role-plum{border-top:4px solid var(--plum)}
+.small{font-size:13px;color:var(--muted)}
+.ok{color:var(--green)} .bad{color:var(--red)} .warn{color:var(--amber)}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--plum-soft);color:var(--plum-deep);vertical-align:middle}
+.pill.teal{background:var(--teal-soft);color:var(--teal)}
+.pill.pink{background:var(--pink-soft);color:var(--pink)}
+.pill.orange{background:var(--orange-soft);color:#9a4e0a}
+.pill.green{background:var(--green-soft);color:var(--green)}
+.pill.red{background:var(--red-soft);color:var(--red)}
+.pill.amber{background:var(--amber-soft);color:#8a6200}
+.pill.grey{background:#efe9ee;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:7px 14px;font-weight:600;font-size:14px}
+.btn:hover{border-color:var(--plum)}
+.btn.primary{background:var(--plum);border-color:var(--plum);color:#fff}
+.btn.primary:hover{background:var(--plum-deep)}
+.btn.pink{background:var(--pink);border-color:var(--pink);color:#fff}
+.btn.orange{background:var(--orange);border-color:var(--orange);color:#fff}
+.btn.danger{color:var(--red);border-color:#f0c7c4}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.sm{padding:4px 10px;font-size:13px}
+.seg{display:inline-flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:6px 12px;font-weight:600;font-size:14px;text-align:left}
+.seg button.is-on{background:var(--teal);border-color:var(--teal);color:#fff}
+.seg button .sub{display:block;font-weight:400;font-size:12px;opacity:.85}
+.field{margin:12px 0 0}
+.field label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+.switch{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;cursor:pointer}
+.switch input{width:38px;height:22px;appearance:none;background:#d9cdd6;border-radius:999px;position:relative;cursor:pointer;margin:0}
+.switch input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s}
+.switch input:checked{background:var(--teal)}
+.switch input:checked::after{left:19px}
+select.sel,input.inp{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:#fff;font-size:14px;max-width:100%}
+dl.kv{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px;margin:0;font-size:14px}
+dl.kv dt{color:var(--muted)} dl.kv dd{margin:0}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+.tw{overflow-x:auto}
+table.t th{text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--line);padding:6px 8px;font-size:13px}
+table.t td{padding:7px 8px;border-bottom:1px solid #f0e9ee;vertical-align:top}
+table.t tr:last-child td{border-bottom:0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin:12px 0}
+.kpi{border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.kpi b{display:block;font-size:22px;font-weight:700;line-height:1.1}
+.kpi span{font-size:13px;color:var(--muted)}
+
+/* gate trace */
+.trace{list-style:none;margin:8px 0 0;padding:0}
+.trace li{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.trace li:last-child{border-bottom:0}
+.trace .g{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;color:#fff;background:var(--muted)}
+.trace .g.yes{background:var(--green)} .trace .g.no{background:var(--red)} .trace .g.ask{background:var(--amber)} .trace .g.out{background:var(--plum)}
+.trace .q{font-weight:600} .trace .n{font-size:13px;color:var(--muted)}
+.trace li.fresh{animation:flash .9s ease-out}
+.trace li.unreached{opacity:.55}
+.trace li.unreached .g{background:#d9cdd6;color:#fff}
+.trace li.unreached .q{font-weight:500;color:var(--muted)}
+.trace li.unreached s{text-decoration-thickness:1px}
+@keyframes flash{0%{background:var(--teal-soft)}100%{background:transparent}}
+
+/* matrix */
+.matrix{border-collapse:separate;border-spacing:4px;font-size:13px}
+.matrix th{font-weight:600;color:var(--muted);font-size:12px;padding:2px 4px;text-align:center}
+.matrix td{padding:0}
+.cell{width:100%;min-width:74px;height:54px;border-radius:8px;border:1px solid transparent;display:flex;flex-direction:column;justify-content:center;align-items:center;font-size:12px;line-height:1.2}
+.cell b{font-size:14px}
+.cell.c2{background:var(--green-soft);color:var(--green)}
+.cell.c1{background:var(--amber-soft);color:#7a5600}
+.cell.c0{background:var(--red-soft);color:var(--red)}
+.cell.cx{background:#efe9ee;color:var(--muted)}
+.cell.is-on{border-color:var(--ink)}
+.cell.funded{box-shadow:inset 0 0 0 2px var(--orange)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px}
+
+/* ---------- the phone ---------- */
+.phone-col{position:sticky;top:16px}
+.phone{position:relative;width:372px;height:772px;background:#1c1320;border-radius:46px;padding:12px;box-shadow:0 36px 60px -34px rgba(74,19,64,.55)}
+.phone::before{content:"";position:absolute;top:12px;left:50%;transform:translateX(-50%);width:110px;height:24px;background:#1c1320;border-radius:0 0 16px 16px;z-index:5}
+.screen{position:relative;height:100%;background:#fff;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;font-size:13.5px;line-height:1.4}
+.phone-hint{color:var(--muted);font-size:14px;margin:12px 4px 0;max-width:46ch}
+.a-bar{display:flex;align-items:center;gap:10px;padding:34px 14px 10px;border-bottom:1px solid #eee;background:#fff;flex:none}
+.a-bar .ico{width:22px;height:22px;display:grid;place-items:center;color:#444;font-size:16px}
+.a-bar .sp{flex:1}
+.a-bar .mock{font-size:11px;color:#8a7d87;background:#f3eef2;border-radius:6px;padding:1px 7px;font-weight:600}
+.a-scroll{flex:1;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.a-img{position:relative;height:228px;background:linear-gradient(160deg,#fbeaf4,#f6f1f9 60%,#fff);display:grid;place-items:center}
+.a-img svg{height:190px}
+.a-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:4px}
+.a-dots i{width:5px;height:5px;border-radius:50%;background:#d8cdd5}.a-dots i:first-child{background:var(--plum)}
+.a-chip{position:absolute;left:12px;bottom:14px;display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #efd6e8;border-radius:999px;padding:5px 11px 5px 6px;font-size:12px;font-weight:600;color:var(--plum-deep);box-shadow:0 4px 12px rgba(74,19,64,.14)}
+.a-chip .play{width:18px;height:18px;border-radius:50%;background:var(--plum);color:#fff;display:grid;place-items:center;font-size:9px}
+.a-sec{padding:12px 14px;border-bottom:8px solid #f5f1f4}
+.a-sec.tight{border-bottom:1px solid #eee}
+.a-title{font-size:15px;font-weight:600;color:#222}
+.a-price{display:flex;align-items:baseline;gap:8px;margin-top:4px}
+.a-price b{font-size:20px}.a-price s{color:#888;font-size:12px}.a-price .fd{color:var(--green);font-size:12px;font-weight:600}
+.a-rate{display:inline-flex;align-items:center;gap:4px;background:#1f8f4e;color:#fff;font-size:11px;font-weight:600;padding:1px 6px;border-radius:4px;margin-left:auto}
+.a-rate span{color:#888;font-weight:400;font-size:11px;background:none}
+.a-lbl{font-size:12px;color:#666;font-weight:600;margin-bottom:6px}
+.a-shades{display:flex;gap:10px;margin:4px 0 2px}
+.a-sw{width:30px;height:30px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #ddd;cursor:pointer;position:relative}
+.a-sw.is-on{box-shadow:0 0 0 2px var(--plum)}
+.a-sw.is-on::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 2px #fff}
+.a-swname{font-size:12px;color:#444;margin-top:4px}
+.a-module{margin-top:10px;border:1px solid #cfe9ec;background:#f2fbfc;border-radius:12px;padding:10px 11px}
+.a-module.ask{background:#fbf5fa;border-color:#ead6e5}
+.a-module.honest{background:#fff8ee;border-color:#f3dfc1}
+.a-module.inherit{background:#f4f8ff;border-color:#cfdcf5}
+.a-mhead{display:flex;align-items:flex-start;gap:8px}
+.a-mhead .ic{width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:12px;flex:none;margin-top:1px}
+.a-module.ask .a-mhead .ic{background:var(--plum)}
+.a-module.honest .a-mhead .ic{background:var(--orange)}
+.a-mtitle{font-weight:700;font-size:13.5px;color:#1e2b2d}
+.a-msub{font-size:12px;color:#5c6b6e;margin-top:1px}
+.a-attr{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 0}
+.a-attr span{font-size:11px;background:#fff;border:1px solid #d8e9eb;border-radius:999px;padding:1px 8px;color:#355}
+.a-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:9px}
+.a-tile{position:relative;display:block;width:100%;border-radius:9px;overflow:hidden;background:#fff;border:1px solid #e3eef0;text-align:left;cursor:pointer;padding:0}
+.a-tile .face{height:66px;display:grid;place-items:center;position:relative}
+.a-tile .face svg{height:56px}
+.a-tile .pl{position:absolute;right:5px;bottom:5px;width:20px;height:20px;border-radius:50%;background:rgba(30,20,28,.78);color:#fff;display:grid;place-items:center;font-size:9px}
+.a-tile .live{position:absolute;left:5px;top:5px;font-size:9px;font-weight:700;color:#fff;background:var(--red);border-radius:4px;padding:0 4px}
+.a-tile .lite{position:absolute;left:5px;top:5px;font-size:9px;font-weight:700;color:#333;background:#fff;border-radius:4px;padding:0 4px;border:1px solid #ddd}
+.a-tile .cap{padding:5px 6px 6px;font-size:11px;line-height:1.25}
+.a-tile .cap b{display:block;font-size:11px;color:#222}
+.a-tile .cap span{color:#667}
+.a-tile .inh{font-size:9.5px;color:#2d4f9a;background:#e8effd;border-radius:4px;padding:0 4px;display:inline-block;margin-top:3px}
+.a-strip{height:66px;width:100%;display:flex}
+.a-strip i{flex:1 1 0;min-width:0;display:block}
+.a-mrow{display:flex;gap:8px;margin-top:9px}
+.a-mbtn{flex:1;border:1px solid #cfe3e6;background:#fff;border-radius:8px;padding:6px 8px;font-size:12px;font-weight:600;color:var(--teal);text-align:center}
+.a-module.ask .a-mbtn.go{background:var(--plum);border-color:var(--plum);color:#fff}
+.a-module.honest .a-mbtn{color:#9a4e0a;border-color:#f0ddc3}
+.a-note{font-size:11px;color:#7a6b76;margin-top:7px}
+.a-seller{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#444}
+.a-seller .v{font-size:10px;color:var(--green);background:var(--green-soft);border-radius:4px;padding:0 5px;font-weight:700}
+.a-trust{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:#555;background:#fafafa;border:1px solid #eee;border-radius:8px;padding:7px 9px;margin-top:10px}
+.a-trust .t{color:var(--green);font-weight:700}
+.a-chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px}
+.a-fchip{border:1px solid #ddd;border-radius:999px;padding:3px 10px;font-size:12px;background:#fff;color:#333}
+.a-fchip.is-on{background:var(--plum-deep);border-color:var(--plum-deep);color:#fff}
+.a-rev{padding:8px 0;border-top:1px solid #f0f0f0;font-size:12.5px}
+.a-rev:first-of-type{border-top:0}
+.a-rev .who{display:flex;align-items:center;gap:7px;color:#333;font-weight:600}
+.a-rev .who .st{color:var(--green);font-size:11px}
+.a-rev .who .lk{margin-left:auto;font-size:10px;color:var(--teal);background:var(--teal-soft);border-radius:4px;padding:0 5px;font-weight:700}
+.a-rev p{color:#555;margin-top:3px}
+.a-details{font-size:12.5px;color:#555}
+.a-details dt{font-weight:600;color:#333;margin-top:6px}.a-details dd{margin:0}
+.a-buy{flex:none;border-top:1px solid #eee;background:#fff;padding:8px 12px 14px}
+.a-nudge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:#0f6b3a;background:var(--green-soft);border-radius:999px;padding:2px 9px;margin-bottom:7px}
+.a-buyrow{display:flex;gap:8px}
+.a-buyrow button{flex:1;border-radius:6px;padding:9px;font-weight:700;font-size:13.5px}
+.a-cart{border:1.5px solid var(--plum);color:var(--plum);background:#fff}
+.a-now{background:var(--plum);color:#fff}
+.a-plain{font-size:12px;color:#8a7d87;text-align:center;padding:6px 12px 0}
+
+/* overlays inside the screen */
+.a-dim{position:absolute;inset:0;background:rgba(28,19,32,.45);z-index:20;display:flex;align-items:flex-end}
+.a-sheet{width:100%;background:#fff;border-radius:22px 22px 0 0;padding:14px 16px 20px;max-height:84%;overflow-y:auto;animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(30px);opacity:.6}to{transform:none;opacity:1}}
+.a-handle{width:38px;height:4px;border-radius:2px;background:#ddd;margin:0 auto 10px}
+.a-sh{display:flex;align-items:center;gap:8px}
+.a-sh .step{font-size:11px;color:#888;font-weight:600}
+.a-sh .x{margin-left:auto;width:28px;height:28px;border-radius:50%;background:#f3eef2;display:grid;place-items:center;font-size:14px}
+.a-q{font-size:16px;font-weight:700;color:#222;margin:8px 0 2px;text-align:center}
+.a-priv{font-size:11px;color:#888;text-align:center}
+.a-faces{display:flex;justify-content:space-between;gap:4px;margin:16px 0 8px}
+.a-face{width:44px;height:44px;border-radius:50%;padding:0;background:none;border:3px solid transparent}
+.a-face.is-on{border-color:var(--plum)}
+.a-hcards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0 8px}
+.a-hcard{border:2px solid #eee;border-radius:12px;padding:8px 4px 6px;background:#fff;text-align:center;font-size:12.5px;font-weight:600;color:var(--plum-deep)}
+.a-hcard.is-on{border-color:var(--plum);background:#fbf5fa}
+.a-hcard svg{width:44px;height:44px;display:block;margin:0 auto 2px}
+.a-opts{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 4px}
+.a-opt{border:1px solid #ddd;border-radius:999px;padding:5px 12px;font-size:13px;background:#fff}
+.a-opt.is-on{background:var(--plum-deep);color:#fff;border-color:var(--plum-deep)}
+.a-og{font-size:12px;color:#666;font-weight:600;margin:10px 0 0;width:100%}
+.a-cta{display:block;width:100%;background:var(--plum);color:#fff;border-radius:8px;padding:10px;font-weight:700;font-size:14px;margin-top:14px}
+.a-cta:disabled{background:#d9cdd6}
+.a-skip{display:block;width:100%;text-align:center;color:#666;font-size:13px;padding:8px;margin-top:4px}
+.a-audio{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--plum-soft);color:var(--plum);font-size:13px;vertical-align:middle}
+
+.a-player{position:absolute;inset:0;background:#120b10;z-index:30;color:#fff;display:flex;flex-direction:column}
+.a-ph{display:flex;align-items:center;gap:8px;padding:38px 14px 8px}
+.a-ph .nm{font-weight:700;font-size:13px}.a-ph .lk{font-size:11px;color:#d8c8d4}
+.a-ph .x{margin-left:auto;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.14);display:grid;place-items:center;color:#fff;font-size:15px}
+.a-media{position:relative;flex:1;margin:0 10px;border-radius:14px;overflow:hidden;background:#2b1a27}
+.a-media svg{width:100%;height:100%;display:block}
+/* images, each with an SVG fallback */
+mj-fb{display:contents}   /* the fallback SVG lays out exactly as it did before images */
+mj-av{display:inline-block;vertical-align:middle;line-height:0;flex:none}
+mj-pa{display:grid;place-items:center;width:190px;height:190px}
+mj-pa img{width:190px;height:190px;object-fit:contain;display:block}
+.a-frames{position:absolute;inset:0;z-index:0;pointer-events:none}
+.a-frames img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .25s}
+.a-frames img.on{opacity:1;z-index:2}
+.a-frames img.prev{opacity:1;z-index:1}
+.a-illus{position:absolute;right:8px;bottom:8px;z-index:3;font-size:10px;line-height:1.4;opacity:.6;background:rgba(18,11,16,.75);color:#fff;border-radius:4px;padding:1px 6px}
+.a-frames:not(.has) .a-illus{display:none}
+.a-tag{position:absolute;font-size:11px;font-weight:600;background:rgba(18,11,16,.78);border-radius:6px;padding:3px 7px;display:flex;align-items:center;gap:5px;opacity:0;transition:opacity .25s}
+.a-tag.on{opacity:1}
+.a-tag .ck{color:#6ee7a0}
+.a-tag.tl{top:10px;left:10px}.a-tag.bl{bottom:10px;left:10px}.a-tag.tr{top:10px;right:10px;background:rgba(255,255,255,.14)}
+.a-prog{height:3px;background:rgba(255,255,255,.2);margin:10px 10px 0;border-radius:2px;overflow:hidden}
+.a-prog i{display:block;height:100%;background:#fff;width:0;transition:width 1s linear}
+.a-pinfo{display:flex;justify-content:space-between;font-size:11px;color:#d8c8d4;padding:6px 12px 0}
+.a-pacts{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 12px 18px}
+.a-pacts button{border-radius:8px;padding:9px;font-weight:700;font-size:13px}
+.a-pacts .alt{background:rgba(255,255,255,.12);color:#fff}
+.a-pacts .buy{background:#fff;color:var(--plum-deep)}
+.a-pacts .wide{grid-column:1/-1;background:transparent;color:#d8c8d4;font-weight:600;padding:4px}
+.a-swx{position:absolute;inset:0;display:grid;place-items:center;background:rgba(18,11,16,.6);opacity:0;pointer-events:none;transition:opacity .2s}
+.a-swx.on{opacity:1;pointer-events:auto}
+.a-swx div{background:#fff;color:#222;border-radius:12px;padding:12px 14px;width:80%;text-align:center;font-size:12px}
+.a-swx .band{height:34px;border-radius:8px;margin:8px 0 6px;display:flex;overflow:hidden}.a-swx .band i{flex:1}
+
+.ptoast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1c1320;color:#fff;padding:10px 16px;border-radius:10px;z-index:100;font-size:14px;line-height:1.4;max-width:min(560px,92vw);box-shadow:0 10px 24px rgba(0,0,0,.25);animation:up .2s ease-out}
+.ptoast[hidden]{display:none}
+.a-toast{position:absolute;left:14px;right:14px;bottom:86px;z-index:40;background:#1c1320;color:#fff;border-radius:10px;padding:9px 12px;font-size:12.5px;line-height:1.35;box-shadow:0 10px 24px rgba(0,0,0,.25);animation:up .2s ease-out}
+
+.a-qa{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.a-qchip{border:1px solid #ddd;border-radius:999px;padding:5px 11px;font-size:12.5px;background:#fff;text-align:left}
+.a-ans{background:#f2fbfc;border:1px solid #cfe9ec;border-radius:10px;padding:9px 11px;font-size:12.5px;color:#223}
+.a-ans.route{background:#fff8ee;border-color:#f3dfc1}
+.a-src{display:inline-flex;align-items:center;gap:5px;margin-top:6px;font-size:11px;color:var(--teal);font-weight:600}
+.a-ans.route .a-src{color:#9a4e0a}
+.a-ask{display:flex;gap:6px;margin-top:8px}
+.a-ask input{flex:1;border:1px solid #ddd;border-radius:8px;padding:7px 10px;font-size:13px}
+.a-ask button{background:var(--plum);color:#fff;border-radius:8px;padding:0 12px;font-weight:700}
+
+.a-order dl{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:13px;margin:10px 0}
+.a-order dt{color:#666}.a-order dd{margin:0;text-align:right;font-weight:600}
+.a-pay{border:1px solid #ddd;border-radius:10px;padding:9px 11px;display:flex;align-items:center;gap:10px;font-size:13px;margin-top:8px;cursor:pointer;background:#fff;width:100%;text-align:left}
+.a-pay.is-on{border-color:var(--plum);background:#fbf5fa}
+.a-pay .rd{width:16px;height:16px;border-radius:50%;border:2px solid #bbb;flex:none}
+.a-pay.is-on .rd{border-color:var(--plum);background:radial-gradient(var(--plum) 45%,#fff 50%)}
+.a-pay .nd{margin-left:auto;font-size:10.5px;color:#0f6b3a;background:var(--green-soft);border-radius:4px;padding:0 5px;font-weight:700}
+.a-conf{text-align:center;padding:10px 0 0}
+.a-conf .ok{width:46px;height:46px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:22px;margin:0 auto 8px}
+.a-attrib{text-align:left;font-size:12px;background:#f7f3f6;border-radius:10px;padding:9px 11px;margin-top:12px;color:#444}
+.a-attrib b{color:var(--plum-deep)}
+
+/* ---------- phone restyle: Meesho's live Android PDP, October 2026 ---------- */
+.screen{--plum:#9f2089;--plum-deep:#7d1a6c;--plum-soft:#fdf2f8;font-family:'DM Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.45;color:#222;background:#fff}
+.screen button,.screen input{font-family:inherit}
+.a-status{display:flex;align-items:center;gap:6px;padding:13px 24px 2px;font-size:12.5px;font-weight:700;color:#111;flex:none;background:#fff}
+.a-status .sp{flex:1}
+.a-status .mk{font-size:9px;font-weight:500;color:#a3a3a3;letter-spacing:.06em;text-transform:uppercase;margin-right:2px}
+.screen .a-bar{padding:4px 8px 6px;border-bottom:0;gap:0}
+.screen .a-bar .ico{width:38px;height:38px;color:#333;display:grid;place-items:center}
+.a-deliv{display:flex;align-items:center;gap:6px;background:#f3eefb;color:#3d2c55;font-size:13px;padding:9px 16px}
+.a-deliv svg{flex:none;color:#6f4fa6}
+.a-deliv b{font-weight:700}
+.a-imgcard{margin:12px 16px 0;border-radius:12px;overflow:hidden;border:1px solid #efefef;background:#fff}
+.screen .a-img{height:296px;background:#fff}
+.screen .a-img svg{height:220px}
+.screen .a-img mj-pa{width:236px;height:236px}
+.screen .a-img mj-pa img{width:236px;height:236px}
+.screen .a-dots{bottom:12px}
+.screen .a-dots i:first-child{background:#9f2089}
+.screen .a-chip{left:10px;bottom:30px;font-size:12px;border-color:#f0d3e8}
+.a-supp{position:absolute;left:12px;bottom:8px;font-size:10.5px;color:#9a9a9a;letter-spacing:.02em}
+.a-coll{position:absolute;right:10px;bottom:8px;width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:0 1px 5px rgba(0,0,0,.16);display:grid;place-items:center;color:#555}
+.screen .a-sec{padding:14px 16px;border-bottom:8px solid #f4f4f6}
+.a-tblk{display:flex;gap:10px;align-items:flex-start}
+.screen .a-title{font-size:16px;font-weight:500;color:#333;flex:1;line-height:1.35}
+.a-ws{display:flex;gap:12px;flex:none}
+.a-ws button{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:10.5px;color:#555}
+.a-pr{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin-top:8px}
+.a-pr b{font-size:24px;font-weight:700;color:#111;line-height:1.1}
+.a-pr s{color:#8a8a8a;font-size:14px}
+.a-pr .off{color:#038d63;font-weight:700;font-size:14px}
+.a-pr .i{color:#8a8a8a;align-self:center;display:inline-flex}
+.a-disc{display:inline-flex;align-items:center;gap:4px;background:#e7f6ef;color:#038d63;font-size:12px;font-weight:700;border-radius:6px;padding:2px 8px;margin-top:8px}
+.a-offer{color:#038d63;font-size:13.5px;font-weight:500;margin-top:8px}
+.a-deal{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;color:#555}
+.a-deal .cd{background:#fff0e5;color:#e05a00;font-weight:700;border-radius:6px;padding:2px 8px;font-size:12px;letter-spacing:.02em}
+.a-ratingrow{display:flex;align-items:center;gap:6px;margin-top:10px}
+.a-rpill{display:inline-block;background:#038d63;color:#fff;font-weight:700;font-size:12.5px;border-radius:999px;padding:1px 9px;line-height:1.6}
+.a-rpill.sm{font-size:11px;padding:0 7px;margin:4px 8px 8px}
+.a-ratingrow .n{color:#6b6b6b;font-size:13px}
+.a-tstrip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:#fdf2f8;border-radius:12px;padding:12px 4px;text-align:center;font-size:12px;line-height:1.3;color:#3c3c3c;gap:4px}
+.a-tstrip svg{display:block;margin:0 auto 5px;color:#9f2089}
+.screen .a-trust{margin-top:8px;background:#fff;border:1px solid #f1e3ec;border-radius:10px;padding:5px 10px;font-size:12px}
+.a-h{font-size:16px;font-weight:700;color:#222;margin-bottom:10px}
+.a-pills{display:flex;flex-wrap:wrap;gap:8px}
+.screen .a-sw{width:auto;height:auto;border-radius:999px;border:1.5px solid #9f2089;box-shadow:none;background:#fff;color:#9f2089;font-size:13px;font-weight:500;padding:6px 12px 6px 7px;display:inline-flex;align-items:center;gap:6px;line-height:1.2}
+.screen .a-sw.is-on{background:#9f2089;color:#fff;box-shadow:none}
+.screen .a-sw.is-on::after{display:none}
+.screen .a-sw i{width:14px;height:14px;border-radius:50%;display:inline-block;box-shadow:0 0 0 1.5px rgba(255,255,255,.9),0 0 0 2.5px rgba(0,0,0,.08)}
+.screen .a-swname{font-size:13.5px;color:#555}
+.screen .a-plain{text-align:left;padding:8px 0 0;font-size:13px}
+.screen .a-module{margin-top:14px;background:#fff;border:1px solid #cfe9ec;border-left:4px solid var(--teal);border-radius:12px;padding:12px;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.screen .a-module.ask{background:#fff;border-color:#ecd6e7;border-left-color:#9f2089}
+.screen .a-module.honest{background:#fff;border-color:#f3dfc1;border-left-color:var(--orange)}
+.screen .a-module.inherit{background:#fff;border-color:#cfdcf5;border-left-color:#3f6fd1}
+.screen .a-mtitle{font-size:14.5px}
+.screen .a-msub{font-size:12.5px}
+.screen .a-mbtn{border-radius:8px;padding:8px;font-size:12.5px}
+.screen .a-module.ask .a-mbtn.go{background:#9f2089;border-color:#9f2089}
+.a-hhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.a-copy{color:#9f2089;font-weight:700;font-size:13px;letter-spacing:.03em}
+.a-hl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 14px;margin:0}
+.a-hl dt{font-size:12px;color:#6b6b6b}
+.a-hl dd{margin:2px 0 0;font-size:13.5px;color:#222}
+.a-addl{display:flex;justify-content:space-between;align-items:center;width:100%;margin-top:14px;padding-top:12px;border-top:1px solid #eee;font-weight:700;font-size:14px;color:#222}
+.a-addltxt{font-size:13px;color:#555;margin-top:8px;line-height:1.6}
+.a-addltxt .v{font-size:10.5px;color:var(--green);background:var(--green-soft);border-radius:4px;padding:0 5px;font-weight:700}
+.a-rsum{display:flex;align-items:center;gap:10px;margin:2px 0 4px}
+.a-rbig{background:#038d63;color:#fff;font-weight:700;border-radius:8px;padding:3px 10px;font-size:14px}
+.a-rsum2{color:#6b6b6b;font-size:12.5px;margin-bottom:12px}
+.a-sub{font-size:14px;font-weight:700;color:#333;margin-bottom:8px}
+.a-thumbs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:12px}
+.a-thumbs::-webkit-scrollbar{display:none}
+.a-th{position:relative;flex:none;width:96px;height:96px;border-radius:10px;overflow:hidden;background:#f6f1f4;padding:0;border:0;display:grid;place-items:center}
+.a-th img{width:96px;height:96px;object-fit:cover;object-position:top;display:block}
+.a-th svg{width:80px;height:80px}
+.a-th .tile-av svg{width:22px;height:22px}
+.a-th .tg{position:absolute;left:4px;bottom:4px;font-size:9px;font-weight:700;background:rgba(255,255,255,.94);color:#0b6b6f;border-radius:4px;padding:0 4px;line-height:1.5}
+.a-th .pl{position:absolute;right:5px;top:5px;width:20px;height:20px;border-radius:50%;background:rgba(30,20,28,.75);color:#fff;display:grid;place-items:center;font-size:9px}
+.screen .a-chips{margin:0 0 4px}
+.screen .a-fchip{border-radius:999px;border:1px solid #d9d9d9;padding:5px 12px;font-size:13px;color:#333}
+.screen .a-fchip.is-on{background:#fdf2f8;border-color:#9f2089;color:#9f2089;font-weight:500}
+.a-rc{display:block;width:100%;text-align:left;padding:14px 0;border-top:1px solid #eee}
+.a-rc .st{color:#038d63;font-weight:700;font-size:13px}
+.a-rc .st span{color:#6b6b6b;font-weight:400}
+.a-rc p{margin-top:6px;color:#333;font-size:14px}
+.a-rc .by{margin-top:8px;color:#6b6b6b;font-size:12.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.a-rc .hp{margin-left:auto;display:inline-flex;gap:4px;align-items:center}
+.a-rc .lk{font-size:10px;color:var(--teal);background:var(--teal-soft);border-radius:4px;padding:0 5px;font-weight:700}
+.a-rcdemo{cursor:pointer}
+.a-rcdemo .st{color:var(--teal)}
+.a-viewall{display:block;width:100%;text-align:left;color:#9f2089;font-weight:700;font-size:13.5px;padding:12px 0 2px;letter-spacing:.03em;border-top:1px solid #eee}
+.a-pav-h{font-weight:700;font-size:14px;letter-spacing:.05em;color:#333;margin-bottom:10px}
+.a-pav{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.a-pc{display:block;border:1px solid #eee;border-radius:12px;overflow:hidden;text-align:left;padding:0;background:#fff;min-width:0}
+.a-pc .im{position:relative;height:128px;display:grid;place-items:center;background:#fbf8fa}
+.a-pc .im img{width:100%;height:128px;object-fit:contain;display:block}
+.a-pc .im svg{height:108px}
+.a-pc .hrt{position:absolute;right:6px;top:6px;width:28px;height:28px;border-radius:50%;background:#fff;display:grid;place-items:center;color:#555;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.a-pc .nm{display:block;font-size:12.5px;color:#444;padding:6px 8px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a-pc .pp{display:block;padding:2px 8px 0;font-size:11.5px;color:#8a8a8a;white-space:nowrap;overflow:hidden}
+.a-pc .pp b{font-size:15px;color:#111}
+.a-pc .pp .off{color:#038d63;font-weight:700}
+.screen .a-buy{padding:8px 12px 14px;border-top:0;box-shadow:0 -2px 10px rgba(0,0,0,.07)}
+.screen .a-nudge{font-size:11.5px}
+.a-buyfull{display:block;width:100%;background:#9f2089;color:#fff;border-radius:8px;padding:12px;font-weight:700;font-size:15.5px;letter-spacing:.01em}
+.screen .a-sheet{border-radius:20px 20px 0 0;padding:12px 16px 20px}
+.screen .a-handle{width:44px;height:5px;border-radius:3px;background:#d9d9d9}
+.screen .a-cta{background:#9f2089;border-radius:8px;padding:12px;font-size:15px}
+.screen .a-cta:disabled{background:#dcc7d7}
+.screen .a-opt.is-on{background:#9f2089;border-color:#9f2089}
+.screen .a-face.is-on,.screen .a-hcard.is-on{border-color:#9f2089}
+.screen .a-pay.is-on{border-color:#9f2089;background:#fdf2f8}
+.screen .a-pacts .buy{color:#9f2089}
+.screen .a-ask button{background:#9f2089}
+.screen .a-toast{font-size:13px}
+.screen .a-img .a-coll svg{width:18px;height:18px}
+.a-pc .im .hrt svg{width:16px;height:16px}
+.screen .a-img .a-chip svg{height:auto}
+@media (max-width:1040px){ .phone-col{grid-template-columns:minmax(0,1fr)} }   /* the photo strip must not widen the phone column */
+
+/* creator / brand / ledger bits */
+.cr-head{display:flex;align-items:center;gap:14px}
+.cr-head svg{width:56px;height:56px}
+.cr-head .nm{font-size:18px;font-weight:700}
+.vec{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.vec span{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 10px 3px 4px;font-size:13px}
+.vec span i{width:18px;height:18px;border-radius:50%;display:inline-block}
+.qc{list-style:none;margin:8px 0;padding:0;display:grid;gap:6px}
+.qc li{display:flex;gap:8px;align-items:center;font-size:14px}
+.qc input{width:16px;height:16px}
+.wanted{display:grid;gap:8px}
+.wrow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px}
+.wrow.fit{border-color:var(--pink);background:var(--pink-soft)}
+.wrow .face{width:34px;height:34px;border-radius:50%}
+.wrow .meta{font-size:13px;color:var(--muted)}
+.wrow .bounty{font-weight:700;color:#9a4e0a}
+.ev{display:grid;grid-template-columns:58px 1fr;gap:4px 10px;align-items:start;padding:8px 0;border-bottom:1px solid #f0e9ee;font-size:14px}
+.ev:last-child{border-bottom:0}
+.ev .day{font-size:12px;color:var(--muted);padding-top:2px}
+.ev .acts{grid-column:2;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.rule{border-left:3px solid var(--line);padding:2px 0 2px 12px;font-size:14px}
+.rule b{display:block}
+.rule.pays{border-color:var(--green)} .rule.never{border-color:var(--red)} .rule.cap{border-color:var(--amber)} .rule.margin{border-color:var(--plum)}
+.deckmap{max-width:1320px;margin:0 auto;padding:0 32px 48px;color:var(--muted);font-size:14px}
+.deckmap summary{cursor:pointer;font-weight:600;color:var(--ink)}
+.deckmap table.t{margin-top:10px;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.deckmap td:first-child{white-space:nowrap;font-weight:600;color:var(--ink)}
+
+/* landing strip */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px 32px;align-items:center;max-width:1320px;margin:0 auto;padding:28px 32px 16px}
+.hero-thesis{font-size:18px;line-height:1.45;max-width:62ch;margin-top:8px}
+.hero .brand-sub{margin-top:6px;font-size:14px}
+.hero-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+a.btn{color:var(--ink);text-decoration:none}
+a.btn.primary{color:#fff}
+.hero-img img{display:block;max-height:220px;max-width:100%;border-radius:14px}
+.tabs-row{max-width:1320px;margin:0 auto;padding:0 32px 12px;display:flex}
+@media (max-width:900px){ .hero{grid-template-columns:minmax(0,1fr)} }
+/* deck chips on panel headings */
+.slide-pill{float:right;margin:2px 0 0 10px;font-size:11px;font-weight:600;line-height:1.6;color:var(--muted);background:#efe9ee;border-radius:999px;padding:0 9px}
+.slide-pill:hover{background:var(--plum-soft);color:var(--plum-deep)}
+/* tile portrait */
+.tile-av{position:absolute;left:5px;top:5px;z-index:1;line-height:0}
+.a-tile .tile-av ~ .live,.a-tile .tile-av ~ .lite{left:31px}
+/* tier 4 audio */
+.spk{display:inline-block;margin-left:5px;animation:spk 1s ease-in-out infinite}
+@keyframes spk{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.25)}}
+.a-tlink{font:inherit;color:inherit;text-decoration:underline;text-underline-offset:2px;padding:0}
+.tour-note{font-size:13px;color:var(--muted);margin-top:6px}
+
+/* guided tour ("Judge mode") */
+.top-right{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+#tour{position:fixed;inset:0;z-index:1000}
+#tour[hidden]{display:none}
+#tour.nospot{background:rgba(28,19,32,.55)}
+.tour-spot{position:fixed;border-radius:12px;box-shadow:0 0 0 9999px rgba(28,19,32,.55);pointer-events:none;transition:top .2s,left .2s,width .2s,height .2s}
+.tour-spot[hidden]{display:none}
+.tour-card{position:fixed;background:#fff;color:var(--ink);width:340px;max-width:calc(100vw - 24px);border-radius:14px;padding:16px 18px 14px;box-shadow:0 18px 40px rgba(28,19,32,.35)}
+.tour-card.center{left:50%;top:50%;transform:translate(-50%,-50%);width:420px}
+.tour-card.sheet{left:0;right:0;bottom:0;top:auto;width:auto;max-width:none;transform:none;border-radius:16px 16px 0 0;padding-bottom:20px}
+.tour-count{font-size:12px;font-weight:700;color:var(--plum);letter-spacing:.04em}
+.tour-card h3{font-size:17px;font-weight:700;color:var(--plum-deep);margin:4px 0 6px}
+.tour-card p{font-size:14px}
+.tour-acts{display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.tour-acts .sp{flex:1}
+.tour-link{font-size:13px;color:var(--muted);text-decoration:underline;padding:4px 0}
+.tour-deck{display:block;margin-top:10px;color:var(--plum)}
+.tour-foot{font-size:11.5px;color:var(--muted);margin-top:10px}
+@media (max-width:640px){.top-right{width:100%}}
+
+@media (max-width:1040px){
+  #v-shopper,.two-col{grid-template-columns:1fr}
+  .phone-col{position:static;display:grid;justify-items:center}
+}
+@media (max-width:640px){
+  .top,main,.notice,.deckmap{padding-left:16px;padding-right:16px}
+  .brand-title{font-size:26px}
+  .phone{width:min(372px,100%);height:740px}
+  .tabs{width:100%;justify-content:space-between}
+  .tab{padding:8px 10px;font-size:14px}
+  .hero,.tabs-row{padding-left:16px;padding-right:16px}
+  .hero-img{display:none}
+  .hero-thesis{font-size:16px}
+}
+@media (max-width:400px){
+  .tab{padding:7px 8px;font-size:13px}
+  .panel{padding:16px 14px}
+  .phone{border-radius:40px;padding:10px}
+  .screen{border-radius:30px}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-text">
+    <h1 class="brand-title">Meri Jaisi Proof Layer</h1>
+    <p class="hero-thesis">Creator demos become suitability-matched proof on the Meesho PDP, matched on skin tone, skin type or hair type, and paid only on delivered conversions.</p>
+    <p class="brand-sub">Archit Singla · Abhinav Sagar · Meesho DICE Challenge S3 · Business Track · semi-final prototype</p>
+    <div class="hero-acts">
+      <button class="btn primary" id="tour-btn" type="button">▶ 2-minute guided demo</button>
+      <a class="btn" href="https://github.com/itsarchitsingla/meri-jaisi-prototype" target="_blank" rel="noopener">Source on GitHub</a>
+    </div>
+  </div>
+  <div class="hero-img"><img src="img/hero.jpg" alt="" onerror="this.parentNode.style.display='none'"></div>
+</header>
+<div class="tabs-row">
+  <nav class="tabs" aria-label="Who the screen is for">
+    <button class="tab is-on" data-act="view" data-view="shopper">Shopper</button>
+    <button class="tab" data-act="view" data-view="creator">Creator</button>
+    <button class="tab" data-act="view" data-view="brand">Brand</button>
+    <button class="tab" data-act="view" data-view="ledger">Ledger</button>
+  </nav>
+</div>
+<p class="notice">Design mockup in Meesho's visual language, not the live app. Creators, counts, prices, views and payouts are illustrative; creator portraits and demo frames are AI-generated images of fictional people. The logic is the one described in the deck. Nothing you do here leaves your browser.</p>
+
+<main>
+  <section id="v-shopper" class="view">
+    <div class="phone-col">
+      <div class="phone">
+        <div class="screen" id="screen"></div>
+      </div>
+      <p class="phone-hint" id="hint"></p>
+    </div>
+    <aside class="side stack">
+      <div class="panel role-teal" id="controls"></div>
+      <div class="panel" id="trace"></div>
+      <div class="panel" id="tierinfo"></div>
+    </aside>
+  </section>
+
+  <section id="v-creator" class="view two-col" hidden>
+    <div class="stack">
+      <div class="panel role-pink" id="cr-profile"></div>
+      <div class="panel" id="cr-attach"></div>
+    </div>
+    <div class="stack">
+      <div class="panel" id="cr-wanted"></div>
+      <div class="panel" id="cr-earn"></div>
+    </div>
+  </section>
+
+  <section id="v-brand" class="view two-col" hidden>
+    <div class="stack">
+      <div class="panel role-orange" id="br-matrix"></div>
+    </div>
+    <div class="stack">
+      <div class="panel" id="br-cell"></div>
+      <div class="panel" id="br-breaker"></div>
+    </div>
+  </section>
+
+  <section id="v-ledger" class="view" hidden>
+    <div class="panel role-plum" id="ld-rules"></div>
+    <div class="two-col view">
+      <div class="panel" id="ld-events"></div>
+      <div class="stack">
+        <div class="panel" id="ld-sim"></div>
+        <div class="panel" id="ld-throttle"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<details class="deckmap">
+  <summary>Where each screen comes from in the deck</summary>
+  <table class="t">
+    <tr><td>Slide 5</td><td>Tag, Attach, Match, Pay: the Creator tab (tag and attach), the Shopper tab (match, on one of three axes: skin tone, skin type or hair type) and the Ledger tab (pay, with the attribution rules).</td></tr>
+    <tr><td>Slide 6</td><td>The PDP: chip A on the first image, match module B at the shade selector, review filter C, 3-tap quiz D, and the tier-wise capture table on the right of the Shopper tab. The phone mock follows Meesho's live Android PDP as of October 2026: delivery banner, trust strip and a single Buy button.</td></tr>
+    <tr><td>Slide 7</td><td>Bottlenecks and mitigations: payout throttle (Ledger), honest no-demo state and Pareto coverage (Brand), neutral tone scale with no label shown (quiz), lite media modes (Tier 3 and 4).</td></tr>
+    <tr><td>Slide 8</td><td>Three coverage tiers A, B and C as the BPC products you can switch between, with the Anti-Frizz Shampoo as the hair-type case; the Demo-Wanted board; the return-rate circuit breaker on inherited demos.</td></tr>
+    <tr><td>Slide 9</td><td>The five gates, traced live on every PDP open; the Never and Fallback rules; the Puchho assistant grounded in demos, reviews and ingredients.</td></tr>
+    <tr><td>Slide 10</td><td>Everything here is the v0 scope: a PDP widget, a tagging sheet and a manual payout run, which is why each screen is simple enough to run from a sheet before any engineering.</td></tr>
+  </table>
+</details>
+<div class="ptoast" id="ptoast" role="status" hidden></div>
+<div id="tour" hidden><div class="tour-spot" hidden></div><div class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tour-title"></div></div>
+
+<script>
+/* =========================================================
+   DATA  (all illustrative; see README for what is mocked)
+   ========================================================= */
+const LINK_RATE = 0.10;      // illustrative affiliate link commission
+const VT_SHARE  = 0.60;      // view-through pays 50–70% of link rate; 60% used
+const WINDOW_DAYS = 90;
+const RETURN_WINDOW = 7;
+const USER = 'U-7731';
+
+/* Images (AI-generated illustrations). Every <img> falls back to the SVG right after it. */
+const IMG = {
+  avatar: id => `img/avatars/${id}.jpg`,
+  product: (pid, code) => pid==='lipstick' ? `img/products/lipstick-${code||'04'}.jpg` : pid==='liquid' ? `img/products/liquid-${code||'R1'}.jpg` : `img/products/${pid}.jpg`,
+  frame: (pid, c, phase) => {
+    if(phase==='sealed') return `img/frames/${pid}-sealed.jpg`;
+    if(pid==='shampoo') return `img/frames/shampoo-${c.hair.toLowerCase()}-${phase==='skin'?'result':'apply'}.jpg`;
+    return `img/frames/${pid}-t${c.tone}-${phase}.jpg`;   // lipstick by tone band; serum only has t3, others fall back
+  }
+};
+const IMG_BAD = new Set();   // sources that failed once render straight to the SVG, so re-renders never flash
+function imgFail(el){ const src = el.getAttribute('src'); el.style.display='none'; const n = el.nextElementSibling; if(n) n.style.display=''; if(!IMG_BAD.has(src)){ IMG_BAD.add(src); console.warn('missing image', src); } }
+function imgTag(src, attrs, fallback){
+  if(IMG_BAD.has(src)) return `<mj-fb>${fallback}</mj-fb>`;
+  return `<img src="${src}" alt="" loading="lazy" onerror="imgFail(this)" ${attrs||''}><mj-fb style="display:none">${fallback}</mj-fb>`;
+}
+
+const TONES = [
+  {id:1, hex:'#f1d6c0', hair:'#4a2f22'},
+  {id:2, hex:'#e4bb9a', hair:'#3b2419'},
+  {id:3, hex:'#cf9a70', hair:'#2e1b12'},
+  {id:4, hex:'#b5794f', hair:'#23140d'},
+  {id:5, hex:'#8a5433', hair:'#1b0f0a'},
+  {id:6, hex:'#5b3521', hair:'#120a07'},
+];
+const MATRIX_LANGS = ['Hindi','Bhojpuri','Marathi','Tamil','Bengali','Kannada'];
+
+const TIERS = {
+  1:{label:'Tier 1', city:'Mumbai, MH', pincode:'400050', appLang:'English', prior:3, net:'Wi-Fi',
+     who:'Compares with Nykaa and Amazon; buys brands; comfortable paying online.',
+     conv:'Tone-matched creators from any city; the skin match carries the sale.',
+     capture:'Ask: the full 3-tap quiz, plus an optional undertone step.',
+     copy:'English or Hinglish; spec copy such as finish, SPF and ingredients.',
+     trust:'Sealed pack, ingredient list, price here versus the brand site.',
+     pay:'None needed; already prepaid-heavy.',
+     media:'Full video; autoplays on Wi-Fi.'},
+  2:{label:'Tier 2', city:'Indore, MP', pincode:'452001', appLang:'Hindi', prior:3, net:'4G',
+     who:"Meesho's core: value brands and unbranded; pays cash on delivery.",
+     conv:'Tone-matched creators from the same state or city.',
+     capture:'Ask: a 3-tap visual quiz on the first beauty PDP; language pre-filled from the app.',
+     copy:'Hindi plus one regional language from the app setting.',
+     trust:'A creator from your state; a 7-day wear demo.',
+     pay:'After a match: a “pay online” nudge through existing prepaid offers.',
+     media:'Standard clip; static first frame on mobile data.'},
+  3:{label:'Tier 3', city:'Nashik, MH', pincode:'422001', appLang:'Marathi', prior:4, net:'patchy 4G',
+     who:'First online beauty buy; low trust; often a shared phone; patchy 4G.',
+     conv:'Small regional creators in her language and district; tone comes second.',
+     capture:'Infer region and language from pincode and app; ask tone only, one tap.',
+     copy:'Regional first; short spoken-style phrases.',
+     trust:'Sealed-pack unboxing; COD still available; easy exchange.',
+     pay:'Keep COD; nudge prepaid only on the repeat purchase.',
+     media:'Lite: 6-second clip, 240p, tap to play.'},
+  4:{label:'Tier 4', city:'Siwan, BR', pincode:'841226', appLang:'Bhojpuri', appLangUi:'Hindi', sub:'Siwan, BR · Hindi app · Bhojpuri', prior:4, net:'2G/3G',
+     who:'First-time or assisted smartphone users; audio over text.',
+     conv:'The same, plus a demo she can forward to family on WhatsApp.',
+     capture:'Infer everything; tone optional; the PDP is never blocked.',
+     copy:'Audio prompts (“sun ke dekho”); icons over words.',
+     trust:'Family-shareable demo; call-back option.',
+     pay:'COD by default; no nudge.',
+     media:'Lite clip plus a swatch-strip image fallback.'},
+};
+
+/* Meesho's language picker has no Bhojpuri: in Tier 4 the app is in Hindi and the pincode places her in the Bhojpuri belt */
+const T4_INFER = `app language ${TIERS[4].appLangUi} + pincode ${TIERS[4].pincode} (Siwan, Bhojpuri belt) → Bhojpuri creators ranked first`;
+const CREATORS = [
+  {id:'c1', name:'Rani',       handle:'@rani.grwm',    tone:5, under:'Warm',    skin:'Oily',        hair:'Wavy',     lang:'Bhojpuri', lang2:'Hindi',   region:'Patna, BR',    followers:'12.4K', reels:23},
+  {id:'c2', name:'Pooja S.',   handle:'@pooja.tries',  tone:3, under:'Neutral', skin:'Combination', hair:'Straight', lang:'Hindi',    lang2:null,      region:'Indore, MP',   followers:'8.1K',  reels:41},
+  {id:'c3', name:'Meenakshi',  handle:'@meena.beauty', tone:4, under:'Warm',    skin:'Oily',        hair:'Curly',    lang:'Tamil',    lang2:'English', region:'Madurai, TN',  followers:'21K',   reels:66},
+  {id:'c4', name:'Ayesha',     handle:'@ayesha.glow',  tone:2, under:'Cool',    skin:'Dry',         hair:'Straight', lang:'Hindi',    lang2:'English', region:'Lucknow, UP',  followers:'45K',   reels:120},
+  {id:'c5', name:'Shraddha',   handle:'@shraddha.nsk', tone:3, under:'Warm',    skin:'Oily',        hair:'Wavy',     lang:'Marathi',  lang2:'Hindi',   region:'Nashik, MH',   followers:'6.7K',  reels:18},
+  {id:'c6', name:'Bhavna',     handle:'@bhavna.jpr',   tone:4, under:'Neutral', skin:'Combination', hair:'Straight', lang:'Hindi',    lang2:null,      region:'Jaipur, RJ',   followers:'15K',   reels:52},
+  {id:'c7', name:'Tanvi',      handle:'@tanvi.makeup', tone:1, under:'Cool',    skin:'Dry',         hair:'Straight', lang:'English',  lang2:'Marathi', region:'Pune, MH',     followers:'110K',  reels:210},
+  {id:'c8', name:'Nandini',    handle:'@nandini.hbl',  tone:6, under:'Warm',    skin:'Oily',        hair:'Curly',    lang:'Kannada',  lang2:'Hindi',   region:'Hubballi, KA', followers:'9.3K',  reels:27},
+  {id:'c9', name:'Farheen',    handle:'@farheen.bpl',  tone:3, under:'Neutral', skin:'Normal',      hair:'Wavy',     lang:'Hindi',    lang2:null,      region:'Bhopal, MP',   followers:'4.2K',  reels:12},
+  {id:'c10',name:'Lakshmi',    handle:'@lakshmi.wgl',  tone:5, under:'Neutral', skin:'Combination', hair:'Curly',    lang:'Telugu',   lang2:'Hindi',   region:'Warangal, TS', followers:'7.8K',  reels:31},
+  {id:'c11',name:'Rupa',       handle:'@rupa.slg',     tone:4, under:'Warm',    skin:'Oily',        hair:'Straight', lang:'Bengali',  lang2:'Hindi',   region:'Siliguri, WB', followers:'5.5K',  reels:15},
+  {id:'c12',name:'Kavita',     handle:'@kavita.indr',  tone:3, under:'Warm',    skin:'Dry',         hair:'Wavy',     lang:'Hindi',    lang2:null,      region:'Indore, MP',   followers:'3.9K',  reels:9},
+  {id:'c13',name:'Sayali',     handle:'@sayali.klp',   tone:4, under:'Warm',    skin:'Combination', hair:'Straight', lang:'Marathi',  lang2:'Hindi',   region:'Kolhapur, MH', followers:'5.1K',  reels:14},
+  {id:'c14',name:'Khushboo',   handle:'@khushboo.chp', tone:4, under:'Neutral', skin:'Oily',        hair:'Wavy',     lang:'Bhojpuri', lang2:'Hindi',   region:'Chhapra, BR',  followers:'2.8K',  reels:11},
+];
+const C = Object.fromEntries(CREATORS.map(c=>[c.id,c]));
+
+const PRODUCTS = {
+  lipstick:{id:'lipstick', cluster:'C-10482', name:'Matte Lipstick', category:'Colour cosmetics', axis:'tone', variant:'Shade', price:199, mrp:499, rating:4.2, ratings:1240,
+    seller:'GlowKart Cosmetics', sellerRating:4.1, verified:true, suitability:true, coverage:'A', listings:7, totalViews:600000,
+    returnRate:5.1, clusterMedian:6.0,
+    shades:[{code:'01',name:'Nude Beige',hex:'#c98a74'},{code:'02',name:'Peach',hex:'#d97b6a'},{code:'03',name:'Mauve',hex:'#a65a6b'},{code:'04',name:'Rosewood',hex:'#8e3a4a'},{code:'05',name:'Berry',hex:'#5c1f33'}],
+    defaultShade:'04',
+    details:[['Finish','Matte, transfer-resistant'],['Net quantity','3.5 g'],['Ingredients','Castor oil, candelilla wax, iron oxides'],['Country of origin','India']]},
+  shampoo:{id:'shampoo', cluster:'C-41208', name:'Anti-Frizz Shampoo 340 ml', category:'Haircare (hair-type product)', axis:'hair', variant:null, price:179, mrp:449, rating:4.1, ratings:860,
+    seller:'HairNest Store', sellerRating:4.0, verified:true, suitability:true, coverage:'A', listings:9, totalViews:380000,
+    returnRate:3.9, clusterMedian:5.0, shades:[], defaultShade:null,
+    details:[['Suits','Wavy and curly hair; frizz control'],['Net quantity','340 ml'],['Ingredients','Aqua, sodium cocoyl isethionate, argan oil, glycerin'],['Country of origin','India']]},
+  serum:{id:'serum', cluster:'C-20917', name:'Vitamin C Serum · Bright', category:'Skincare (skin-type product)', axis:'skin', variant:null, price:249, mrp:699, rating:4.0, ratings:532,
+    seller:'DermaCart Store', sellerRating:3.9, verified:true, suitability:true, coverage:'B', listings:11, totalViews:420000,
+    inheritedFrom:'GlowKart Official', returnRate:4.8, clusterMedian:6.0, shades:[], defaultShade:null,
+    details:[['Actives','10% ethyl ascorbic acid, hyaluronic acid'],['Net quantity','30 ml'],['Fragrance','None listed'],['Country of origin','India']]},
+  liquid:{id:'liquid', cluster:'C-30355', name:'Liquid Lipstick · Poppy Red', category:'Colour cosmetics', axis:'tone', variant:'Shade', price:149, mrp:399, rating:3.9, ratings:87,
+    seller:'Belle Trends', sellerRating:3.8, verified:true, suitability:true, coverage:'C', listings:4, totalViews:260000,
+    returnRate:6.2, clusterMedian:6.0,
+    shades:[{code:'R1',name:'Poppy Red',hex:'#c8232c'},{code:'R2',name:'Brick',hex:'#9c3b2a'}], defaultShade:'R1',
+    details:[['Finish','Liquid matte'],['Net quantity','5 ml'],['Ingredients','Dimethicone, isododecane, pigments'],['Country of origin','India']]},
+  bottle:{id:'bottle', cluster:'C-77120', name:'Steel Water Bottle 1 L', category:'Home and kitchen', axis:null, variant:null, price:299, mrp:799, rating:4.3, ratings:3410,
+    seller:'HomeNest', sellerRating:4.2, verified:true, suitability:false, coverage:null, listings:19, totalViews:0,
+    shades:[], defaultShade:null,
+    details:[['Material','Stainless steel 304'],['Capacity','1000 ml'],['Country of origin','India']]},
+};
+const BPC = ['lipstick','shampoo','serum','liquid'];
+
+/* Suitability axes: what a product matches on. One attribute model, one set of mechanics. */
+const AXES = {
+  tone:{label:'skin tone', bands:[1,2,3,4,5,6], of:c=>c.tone, dist:(a,b)=>Math.abs(a-b), w:[0.08,0.14,0.26,0.24,0.17,0.11]},
+  skin:{label:'skin type', bands:['Oily','Dry','Combination','Normal'], of:c=>c.skin, dist:(a,b)=>a===b?0:1, w:{Oily:.35,Dry:.2,Combination:.3,Normal:.15}},
+  hair:{label:'hair type', bands:['Straight','Wavy','Curly'], of:c=>c.hair, dist:(a,b)=>Math.abs(['Straight','Wavy','Curly'].indexOf(a)-['Straight','Wavy','Curly'].indexOf(b)), w:{Straight:.45,Wavy:.35,Curly:.20}},
+};
+const axisOf = p => p ? p.axis : null;
+const bandOf = (c, axis) => AXES[axis].of(c);
+function bandLabel(axis, b){ return axis==='tone' ? 'tone band '+b : axis==='hair' ? String(b).toLowerCase()+' hair' : String(b).toLowerCase()+' skin'; }
+function likeText(axis){ return axis==='hair' ? 'Hair like yours' : axis==='skin' ? 'Skin type like yours' : 'Skin like yours'; }
+function revLike(r, v, axis){ const b = v.band(axis); if(b==null) return true; return axis==='tone' ? Math.abs(r.tone - b)<=1 : r[axis]===b; }
+function frizzPts(){ const pts = []; for(let i=0;i<=28;i++){ const a = Math.PI + Math.PI*i/28, r = i%2 ? 112 : 96; pts.push((160 + r*Math.cos(a)).toFixed(1)+','+(190 + r*1.1*Math.sin(a)).toFixed(1)); } pts.push('262,252','58,252'); return pts.join(' '); }
+
+const BASE_DEMOS = [
+  {id:'d1', product:'lipstick', creator:'c1', type:'7day',  shade:'04', pdpViews:12800, igViews:3100, orders:61},
+  {id:'d2', product:'lipstick', creator:'c1', type:'swatch',shade:'04', pdpViews:9400,  igViews:1800, orders:40},
+  {id:'d3', product:'lipstick', creator:'c2', type:'grwm',  shade:'04', pdpViews:7100,  igViews:2200, orders:33},
+  {id:'d4', product:'lipstick', creator:'c3', type:'grwm',  shade:'03', pdpViews:4300,  igViews:5100, orders:21},
+  {id:'d5', product:'lipstick', creator:'c4', type:'swatch',shade:'02', pdpViews:5200,  igViews:9000, orders:24},
+  {id:'d6', product:'lipstick', creator:'c5', type:'7day',  shade:'04', pdpViews:3900,  igViews:1200, orders:19},
+  {id:'d7', product:'lipstick', creator:'c6', type:'swatch',shade:'04', pdpViews:6600,  igViews:3000, orders:30},
+  {id:'d8', product:'lipstick', creator:'c7', type:'grwm',  shade:'01', pdpViews:2100,  igViews:14000,orders:12},
+  {id:'d9', product:'lipstick', creator:'c8', type:'swatch',shade:'04', pdpViews:3300,  igViews:1500, orders:17},
+  {id:'d10',product:'lipstick', creator:'c9', type:'7day',  shade:'03', pdpViews:2800,  igViews:700,  orders:13},
+  {id:'d11',product:'lipstick', creator:'c10',type:'grwm',  shade:'05', pdpViews:2400,  igViews:1300, orders:11},
+  {id:'d12',product:'lipstick', creator:'c11',type:'swatch',shade:'04', pdpViews:1900,  igViews:900,  orders:9},
+  {id:'d13',product:'lipstick', creator:'c12',type:'7day',  shade:'04', pdpViews:3100,  igViews:600,  orders:15},
+  {id:'d14',product:'lipstick', creator:'c6', type:'grwm',  shade:'03', pdpViews:2600,  igViews:2000, orders:12},
+  {id:'d18',product:'lipstick', creator:'c13',type:'swatch',shade:'04', pdpViews:2200,  igViews:400,  orders:10},
+  {id:'d19',product:'lipstick', creator:'c14',type:'grwm',  shade:'04', pdpViews:1700,  igViews:300,  orders:8},
+  {id:'d15',product:'serum',    creator:'c5', type:'7day',  shade:null, pdpViews:5400,  igViews:1000, orders:26, inherited:true},
+  {id:'d16',product:'serum',    creator:'c2', type:'7day',  shade:null, pdpViews:4800,  igViews:1900, orders:22, inherited:true},
+  {id:'d17',product:'serum',    creator:'c9', type:'swatch',shade:null, pdpViews:2100,  igViews:500,  orders:9,  inherited:true},
+  {id:'d20',product:'shampoo',  creator:'c5', type:'washday',shade:null,pdpViews:6100,  igViews:900,  orders:28},
+  {id:'d21',product:'shampoo',  creator:'c1', type:'7day',   shade:null,pdpViews:5200,  igViews:1400, orders:24},
+  {id:'d22',product:'shampoo',  creator:'c3', type:'washday',shade:null,pdpViews:4700,  igViews:3800, orders:22},
+  {id:'d23',product:'shampoo',  creator:'c8', type:'routine',shade:null,pdpViews:2900,  igViews:700,  orders:14},
+  {id:'d24',product:'shampoo',  creator:'c2', type:'washday',shade:null,pdpViews:3800,  igViews:1600, orders:18},
+  {id:'d25',product:'shampoo',  creator:'c6', type:'7day',   shade:null,pdpViews:3300,  igViews:2100, orders:15},
+  {id:'d26',product:'shampoo',  creator:'c10',type:'7day',   shade:null,pdpViews:2400,  igViews:1100, orders:11},
+  {id:'d27',product:'shampoo',  creator:'c14',type:'washday',shade:null,pdpViews:1900,  igViews:400,  orders:9},
+  {id:'d28',product:'shampoo',  creator:'c13',type:'washday',shade:null,pdpViews:2100,  igViews:300,  orders:10},
+];
+const TYPE_LABEL = {swatch:'Swatch', '7day':'7-day wear', grwm:'GRWM', washday:'Wash-day result', routine:'Routine'};
+
+const REVIEWS = {
+  lipstick:[
+    {who:'Priya M.', tone:3, skin:'Oily', hair:null, star:5, txt:'Rosewood on my skin looks exactly like the demo. 6 hours, no touch-up.'},
+    {who:'Sunita K.', tone:5, skin:'Combination', hair:null, star:4, txt:'Deeper than the swatch card, closer to a berry on me. Still nice.'},
+    {who:'Deepa R.', tone:2, skin:'Dry', hair:null, star:3, txt:'Dries lips a little; use balm under it.'},
+    {who:'Anjali T.', tone:4, skin:'Oily', hair:null, star:5, txt:'Sealed pack, matte finish, good for the price.'},
+    {who:'Komal V.', tone:3, skin:'Normal', hair:null, star:4, txt:'Mauve was pinker than I expected but fine.'},
+    {who:'Rekha D.', tone:6, skin:'Oily', hair:null, star:4, txt:'Looks rich on deep skin; the demo helped me pick 04 over 05.'},
+  ],
+  serum:[
+    {who:'Neha B.', tone:3, skin:'Oily', hair:null, star:4, txt:'No stickiness. Two weeks in, skin looks a bit brighter.'},
+    {who:'Jyoti P.', tone:4, skin:'Dry', hair:null, star:3, txt:'Needs moisturiser on top in winter.'},
+    {who:'Asha L.', tone:3, skin:'Combination', hair:null, star:5, txt:'Same product as the official listing, cheaper here.'},
+  ],
+  liquid:[
+    {who:'Pallavi S.', tone:3, skin:'Oily', hair:null, star:4, txt:'Bright red, stays about 4 hours.'},
+    {who:'Hema G.', tone:5, skin:'Dry', hair:null, star:3, txt:'Patchy on dry lips. Colour is good.'},
+    {who:'Ritu A.', tone:4, skin:'Normal', hair:null, star:4, txt:'Dries fast. Not transfer-proof.'},
+  ],
+  shampoo:[
+    {who:'Sneha R.', tone:3, skin:null, hair:'Curly',    star:5, txt:'Curls held their shape for two days, no crunch.'},
+    {who:'Meera J.', tone:4, skin:null, hair:'Wavy',     star:4, txt:'Frizz noticeably down by the third wash; mild smell.'},
+    {who:'Divya P.', tone:2, skin:null, hair:'Straight', star:3, txt:'Fine on straight hair but a little drying at the ends.'},
+    {who:'Anita S.', tone:5, skin:null, hair:'Curly',    star:4, txt:'Sealed bottle like the demo; works best with a leave-in.'},
+  ],
+  bottle:[
+    {who:'Amit S.', tone:0, skin:null, hair:null, star:5, txt:'Keeps water cold for hours.'},
+    {who:'Geeta N.', tone:0, skin:null, hair:null, star:4, txt:'Lid is a bit tight.'},
+  ],
+};
+
+/* Copy per tier. The attribute model is the same; only words and capture change. */
+const COPY = {
+  1:{chip:'See it on skin like yours', ask:'Show me on skin like mine', tried:'{n} creators like you tried this', chose:'{m} chose {shade}',
+     matched:'Matched for you', notMine:'Not my tone?', puchho:'Ask', filter:'Skin like mine', withVideo:'With video',
+     noDemo:'No demo on skin like yours yet', noDemoSub:'Closest match is on a different product, and we say so.',
+     closest:'Closest skin tones shown; no exact match yet.', privacy:'Only for you. Never shown to anyone.',
+     q1:'Which face is closest to your skin tone?', q2:'Your skin and hair', q3:'Language for demos', q4:'Undertone (optional)',
+     skip:'Skip', next:'Next', done:'Show my matches', trust:'Sealed pack shown · ingredient list · {price} here, {brand} on the brand site',
+     nudge:null, media:'Full video', suit:'Didn’t suit my tone', buy:'Buy this shade', swatch:'See swatch', back:'Back', inherit:'Same product, different seller'},
+  2:{chip:'Meri jaisi skin pe dekho', ask:'Meri jaisi dikhao', tried:'Aap jaisi {n} creators ne try kiya', chose:'{m} ne {shade} chuna',
+     matched:'Aapke liye matched', notMine:'Not my tone?', puchho:'Puchho', filter:'Skin like mine', withVideo:'Video ke saath',
+     noDemo:'Aapki skin pe demo abhi nahi hai', noDemoSub:'Sabse paas wala demo dusre product ka hai; hum yeh saaf bata rahe hain.',
+     closest:'Sabse paas ki skin tone dikha rahe hain; exact match abhi nahi.', privacy:'Sirf aapke liye. Kabhi public nahi.',
+     q1:'Aapki skin tone ke sabse paas kaun si hai?', q2:'Aapki skin aur baal', q3:'Demo kis bhasha mein?', q4:null,
+     skip:'Skip', next:'Aage', done:'Mere matches dikhao', trust:'Aapke state ki creator · 7-din wear demo',
+     nudge:'Online pay karein, ₹20 aur bachayein', media:'Standard clip', suit:'Mere tone pe nahi jama', buy:'Yeh shade kharidein', swatch:'Swatch dekhein', back:'Wapas', inherit:'Same product, dusra seller'},
+  3:{chip:'Tumchya sarkhya skin var bagha', ask:'Mala dakhva', tried:'Tumchya sarkhya {n} creators ni try kela', chose:'{m} ni {shade} nivadla',
+     matched:'Tumchyasathi', notMine:'Mazi skin nahi?', puchho:'Vichara', filter:'Mazya sarkhi skin', withVideo:'Video sobat',
+     noDemo:'Tumchya skin var demo ajun nahi', noDemoSub:'Javalcha demo dusrya product cha aahe; te spasht sangto.',
+     closest:'Javalchi skin tone dakhvat aahot.', privacy:'Phakt tumchyasathi. Kadhich public nahi.',
+     q1:'Tumchya skin la sarvat javal konti?', q2:null, q3:null, q4:null,
+     skip:'Nako', next:'Pudhe', done:'Dakhva', trust:'Sealed pack · COD aahe · exchange sopa',
+     nudge:null, media:'6 s · 240p', suit:'Mazya tone var nahi', buy:'Hi shade ghya', swatch:'Swatch', back:'Maage', inherit:'Same product, dusra seller'},
+  4:{chip:'🔊 Hamar jaisan skin pe dekhi', ask:'🔊 Dekhi', tried:'👩 {n} aap jaisan', chose:'{m} · {shade}',
+     matched:'🔊 Aap khatir', notMine:'🔊 Hamar jaisan na?', puchho:'🎤 Puchhi', filter:'👩 Hamar jaisan', withVideo:'▶ Video',
+     noDemo:'🔊 Demo nahi ba', noDemoSub:'Dusra product ke demo ba; saaf likhal ba.',
+     closest:'Sabse najdeek ke skin.', privacy:'🔒 Khali aap khatir',
+     q1:'🔊 Sun ke dekhi', q2:null, q3:null, q4:null,
+     skip:'➜ Chhodi', next:'➜', done:'✓', trust:'📲 WhatsApp pe bheji · 📞 Call-back',
+     nudge:null, media:'6 s · swatch', suit:'👎 Hamar tone na', buy:'🛒 Kharidi', swatch:'▦ Swatch', back:'←', inherit:'Same product, dusar seller'},
+};
+/* Axis-aware overrides, consulted before COPY[tier]; keys not listed fall through. */
+const AXIS_COPY = {
+  1:{hair:{buy:'Buy this', chip:'See it on hair like yours', ask:'Show me on hair like mine', tried:'{n} creators with hair like yours tried this', filter:'Hair like mine', notMine:'Not my hair type?', noDemo:'No demo on hair like yours yet', closest:'Closest hair types shown; no exact match yet.', q1:'Which is closest to your hair?', suit:'Didn’t suit my hair', swatch:'See wash-day result', trust:'Sealed bottle shown · ingredient list · ₹179 here, ₹219 on the brand site', q2:'Your skin (optional)'},
+     skin:{noDemoSub:'No demo on this product yet; ask from the reviews and ingredients.', buy:'Buy this', closest:'Closest skin types shown; no exact match yet.', tried:'{n} creators with your skin type tried this', filter:'Skin type like mine', notMine:'Not my skin type?', q1:'Your skin type', suit:'Didn’t suit my skin', swatch:'See 7-day result', q2:'Your skin tone and hair (optional)'}},
+  2:{hair:{buy:'Yeh kharidein', chip:'Mere jaise baalon pe dekho', ask:'Mere jaise baal dikhao', tried:'Aap jaise baalon wali {n} creators ne try kiya', filter:'Mere jaise baal', notMine:'Mere baal aise nahi?', noDemo:'Aap jaise baalon pe demo abhi nahi hai', closest:'Sabse paas ka hair type dikha rahe hain; exact match abhi nahi.', q1:'Aapke baal kaise hain?', suit:'Mere baalon pe nahi jama', swatch:'Wash ke baad dekhein', trust:'Aapke state ki creator · wash-day demo', q2:'Aapki skin (optional)'},
+     skin:{noDemoSub:'Is product par demo abhi nahi; reviews aur ingredients se poochhiye.', buy:'Yeh kharidein', closest:'Sabse paas ka skin type dikha rahe hain; exact match abhi nahi.', tried:'Aap jaisi skin type wali {n} creators ne try kiya', filter:'Meri jaisi skin type', notMine:'Meri skin aisi nahi?', q1:'Aapki skin kaisi hai?', suit:'Meri skin pe nahi jama', swatch:'7 din baad dekhein', q2:'Aapki skin tone aur baal (optional)'}},
+  3:{hair:{buy:'He ghya', chip:'Tumchya sarkhya kesanvar bagha', tried:'Tumchya sarkhe kes asleli {n} creators ni try kela', filter:'Mazya sarkhe kes', notMine:'Maze kes ase nahi?', noDemo:'Tumchya kesanvar demo ajun nahi', q1:'Tumche kes kase aahet?', suit:'Mazya kesanvar nahi', swatch:'Wash nantar'},
+     skin:{noDemoSub:'Ya product var demo ajun nahi; reviews ani ingredients vicharaa.', buy:'He ghya', closest:'Javalcha skin type dakhvat aahot.', tried:'Tumchya sarkhi skin asleli {n} creators', filter:'Mazya sarkhi skin', notMine:'Mazi skin ashi nahi?', q1:'Tumchi skin kashi aahe?', suit:'Mazya skin var nahi'}},
+  4:{hair:{buy:'🛒 Kharidi', chip:'🔊 Hamar jaisan baal pe dekhi', tried:'👩 {n} aap jaisan baal', filter:'👩 Hamar jaisan baal', notMine:'🔊 Hamar baal aisan na?', suit:'👎 Hamar baal pe na', swatch:'▦ Wash ke baad'},
+     skin:{noDemoSub:'🔊 Demo nahi ba; reviews se puchhi.', buy:'🛒 Kharidi', tried:'👩 {n} aap jaisan skin', filter:'👩 Hamar jaisan skin', notMine:'🔊 Hamar skin aisan na?', suit:'👎 Hamar skin pe na'}},
+};
+function cp(key, vars){
+  const ax = axisOf(PRODUCTS[state.productId]), ov = ax && AXIS_COPY[state.tier] && AXIS_COPY[state.tier][ax];
+  let s = ov && ov[key]!=null ? ov[key] : COPY[state.tier][key];
+  if(s==null){ const o2 = ax && AXIS_COPY[2][ax]; s = o2 && o2[key]!=null ? o2[key] : COPY[2][key]; }
+  if(vars) for(const k in vars) s = s.replace('{'+k+'}', vars[k]); return s; }
+
+/* Puchho: canned, grounded answers. Anything else is routed to the creator. */
+const QA = {
+  lipstick:{
+    chips:{en:['Oily skin okay?','How long does it last?','On deeper skin?'], hi:['Oily skin pe chalega?','Kitne ghante tikta hai?','Dark skin pe kaisa lagta hai?']},
+    items:[
+      {k:['oily','oil','tel'], en:'Yes. Rani (oily skin, skin like yours) kept a matte finish for 6 hours in her 7-day wear demo; only a light fade in the centre.', hi:'Haan. Rani (oily skin, aap jaisi) ke 7-din wear demo mein 6 ghante tak matte finish raha; sirf beech mein halka fade.', demo:'d1', at:'0:14–0:21'},
+      {k:['long','last','hour','tikta','ghante','kitne'], en:'5 to 6 hours in the demos, one touch-up after eating.', hi:'Demos mein 5–6 ghante, khaane ke baad ek touch-up.', demo:'d3', at:'0:40'},
+      {k:['dark','deep','dusky','saanw','kaala','kala'], en:'On Nandini (deeper skin) Rosewood reads deeper, closer to a berry; lighter than Shade 05.', hi:'Nandini ki skin par Rosewood thoda deep, berry jaisa dikhta hai; Shade 05 se halka.', demo:'d9', at:'0:05'},
+      {k:['dry','sukh','rukh','flak'], en:'Kavita (dry lips) applied it over balm; without balm it looked slightly flaky.', hi:'Kavita (dry lips) ne balm ke upar lagaya; bina balm thoda flaky dikha.', demo:'d13', at:'0:30'},
+      {k:['fake','original','asli','nakli','genuine','real'], en:'Every demo starts by opening the sealed pack; the seller is verified. The batch code is visible at 0:02.', hi:'Har demo sealed pack khol kar shuru hota hai; seller verified hai. Batch code 0:02 par dikhta hai.', demo:'d2', at:'0:02'},
+      {k:['ingredient','paraben','vegan','cruelty'], en:'Listed ingredients: castor oil, candelilla wax, iron oxides. Paraben is not listed. We make no medical or safety claims.', hi:'Listing ke ingredients: castor oil, candelilla wax, iron oxides. Paraben listed nahi. Medical ya safety claim hum nahi karte.', listing:true},
+    ]},
+  shampoo:{
+    chips:{en:['Curly hair okay?','Does it dry hair out?','Sulphate-free?'], hi:['Curly baalon pe chalega?','Baal rukhe hote hain?','Sulphate-free hai?']},
+    items:[
+      {k:['curly','curl','ghungrale'], en:'Yes. Meenakshi (curly hair, like yours) shows defined curls on day 2 in her wash-day demo.', hi:'Haan. Meenakshi (curly baal, aap jaisi) ke wash-day demo mein doosre din bhi curls defined hain.', demo:'d22', at:'0:40'},
+      {k:['dry','rukh','sukh','frizz'], en:'Shraddha (wavy hair) saw less frizz by wash three; Divya (straight hair) found the ends slightly dry and uses a conditioner.', hi:'Shraddha (wavy baal) ko teesre wash tak frizz kam laga; Divya (straight baal) ko ends thode rukhe lage, woh conditioner use karti hain.', demo:'d20', at:'0:25'},
+      {k:['sulphate','sulfate','sls','ingredient'], en:'The listing names sodium cocoyl isethionate, a mild surfactant, and no SLS. We make no claims beyond the label.', hi:'Listing mein sodium cocoyl isethionate hai, ek mild surfactant; SLS listed nahi. Label se aage hum koi claim nahi karte.', listing:true},
+    ]},
+  serum:{
+    chips:{en:['Sensitive skin?','Sticky?','Same as official?'], hi:['Sensitive skin pe?','Chipchipa hai?','Official wala hi hai?']},
+    items:[
+      {k:['sensitive','redness','irrit','jalan'], en:'Shraddha (combination skin) showed no redness across 7 days in her demo. No fragrance is listed. We make no medical claim.', hi:'Shraddha (combination skin) ke demo mein 7 din tak koi redness nahi. Fragrance listed nahi. Medical claim hum nahi karte.', demo:'d15', at:'1:02'},
+      {k:['sticky','chip','greasy','oily'], en:'Pooja S. says it absorbed in about a minute with no sticky layer.', hi:'Pooja S. kehti hain ek minute mein absorb ho gaya, chipchipa layer nahi.', demo:'d16', at:'0:22'},
+      {k:['same','official','seller','original','asli'], en:'Same product, different seller: barcode confirmed against the GlowKart Official listing. Demos are inherited from that listing and labelled.', hi:'Same product, dusra seller: barcode GlowKart Official listing se match. Demos wahi se inherit hue hain aur label kiye gaye hain.', listing:true},
+    ]},
+  liquid:{
+    chips:{en:['How long does it last?','Dry lips?','Any demo?'], hi:['Kitne ghante tikta hai?','Dry lips pe?','Koi demo hai?']},
+    items:[
+      {k:['long','last','hour','tikta','ghante'], en:'No demo yet. Three reviews say about 4 hours; not transfer-proof.', hi:'Demo abhi nahi. 3 reviews kehte hain lagbhag 4 ghante; transfer-proof nahi.', review:true},
+      {k:['dry','sukh','patchy'], en:'One review (dry lips) found it patchy. Ingredients list dimethicone and isododecane; no balm base.', hi:'Ek review (dry lips) mein patchy laga. Ingredients mein dimethicone, isododecane; balm base nahi.', review:true},
+      {k:['demo','video','dikha'], en:'No demo on this product yet. A Demo-Wanted bounty is posted; the closest demo is on Matte Lipstick, a different product.', hi:'Is product par demo abhi nahi. Demo-Wanted bounty post ho gayi hai; sabse paas ka demo Matte Lipstick ka hai, alag product.', review:true},
+    ]},
+};
+
+/* =========================================================
+   STATE
+   ========================================================= */
+let seq = 0;
+const state = {
+  view:'shopper', tier:2, productId:'lipstick', returning:false, profile:null, shade:'04',
+  quiz:null, player:null, puchho:null, order:null, filterMine:false, toast:null,
+  demos: BASE_DEMOS.slice(), ledger:[], seen:new Set(), lastEngaged:{}, paidCluster:{}, routing:0,
+  funded:{}, creatorId:'c1', tagConfirmed:{}, tagEdit:false, breaker:false, day:1,
+  brandProduct:'lipstick', brandCell:null, impressionsLogged:new Set(), attachResult:null,
+};
+try{ const p = localStorage.getItem('mj_profile'); if(p) state.profile = JSON.parse(p); }catch(e){}
+
+function saveProfile(){ try{ if(state.profile) localStorage.setItem('mj_profile', JSON.stringify(state.profile)); else localStorage.removeItem('mj_profile'); }catch(e){} }
+const fmt = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const num = n => Math.round(n).toLocaleString('en-IN');
+const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const stateOf = r => (r||'').split(',').pop().trim();
+const langMatch = (c, lang) => !!lang && (c.lang===lang || c.lang2===lang || (lang==='Hinglish' && (c.lang==='Hindi'||c.lang==='English')));
+function avatar(c, size, ring){
+  const svg = avatarSvg(c, size, ring);
+  if(!c.id) return svg;   // quiz faces and review avatars stay abstract
+  return `<mj-av style="width:${size}px;height:${size}px">${imgTag(IMG.avatar(c.id), `style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;display:block;box-sizing:border-box;${ring?`border:2px solid ${ring};`:''}"`, svg)}</mj-av>`;
+}
+function avatarSvg(c, size, ring){
+  const t = TONES[(c.tone||3)-1];
+  return `<svg width="${size}" height="${size}" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="${ring||'#f3e6ef'}"/><path d="M8 40c0-7 5-12 12-12s12 5 12 12z" fill="#ffffff" opacity=".9"/><path d="M10 19a10 10 0 0 1 20 0v4H10z" fill="${t.hair}"/><circle cx="20" cy="20" r="8.5" fill="${t.hex}"/><path d="M12 18.5a8 8 0 0 1 16 0c-2.5-3.5-5-4.5-8-4.5s-5.5 1-8 4.5z" fill="${t.hair}"/></svg>`;
+}
+function toneDot(t, size){ return `<i style="width:${size}px;height:${size}px;border-radius:50%;background:${TONES[t-1].hex};display:inline-block;vertical-align:-3px"></i>`; }
+
+/* =========================================================
+   LOGIC: shopper vector, gates, matching
+   ========================================================= */
+function demosFor(pid){
+  return state.demos.filter(d => d.product===pid && !(d.inherited && state.breaker));
+}
+function shopperVector(){
+  const t = TIERS[state.tier];
+  const v = {lang:t.appLang, region:t.city, tone:null, skin:null, hair:null, under:null, source:'inferred', basis: state.tier===4 ? T4_INFER : `app language ${t.appLang}, pincode ${t.pincode}`};
+  if(state.profile){
+    Object.assign(v, state.profile);
+    v.basis = state.profile.source==='asked' ? 'your saved answers' : 'a regional estimate after you skipped the quiz';
+  } else if(state.returning && state.tier<=2){
+    v.tone = 3; v.skin = 'Combination'; v.basis = 'past orders: Shade 03 Mauve ×2';
+  } else if(state.tier>=3){
+    v.tone = t.prior; v.toneInferred = true;
+  }
+  /* the shopper's band on a product's axis; Tier 3/4 have a tone prior only, so skin/hair stay null (matched on language) */
+  v.band = axis => axis==='tone' ? v.tone : axis==='skin' ? v.skin : axis==='hair' ? v.hair : null;
+  return v;
+}
+function quizPlan(){
+  const t = state.tier, axis = axisOf(PRODUCTS[state.productId]) || 'tone';
+  if(t===1) return axis==='tone' ? ['band','other','lang','under'] : ['band','other','lang'];
+  if(t===2) return ['band','other','lang'];
+  if(t===3) return ['band'];
+  return state.quiz && state.quiz.from==='edit' ? ['band'] : [];   // Tier 4: never asks; "Not my …?" opens the one-tap band pick
+}
+function profileKnows(axis){ const pr = state.profile; return !!pr && (pr[axis]!=null || (pr.skipped||[]).includes(axis)); }
+function runGates(){
+  const p = PRODUCTS[state.productId], t = TIERS[state.tier], axis = p.axis || 'tone', A = AXES[axis];
+  const nm = axis==='tone' ? 'Not my tone?' : AXIS_COPY[1][axis].notMine;
+  const demos = demosFor(p.id), trace = [];
+  trace.push({n:1, q:'Suitability category?', ans:p.suitability, note:p.suitability ? `${p.category}: shade, skin-type or hair-type product` : `${p.category}: nothing is added to this PDP`});
+  if(!p.suitability) return {outcome:'plain', trace, label:'Plain PDP, nothing added'};
+  const covered = demos.length>=2;
+  trace.push({n:2, q:'Cluster covered?', ans:covered, note:covered ? `${demos.length} qualifying demos (coverage tier ${p.coverage}${p.coverage==='B'?', inherited inside a manufacturer-verified cluster':''})` : (p.coverage==='B' && state.breaker ? 'Inherited demos revoked by the return-rate circuit breaker' : `${demos.length} demos; fewer than 2`)});
+  if(!covered) return {outcome:'tierC', trace, label:'Tier C state: no chip; “no demo yet” plus Q&A; bounty auto-posts'};
+  const known = profileKnows(axis);
+  trace.push({n:3, q:'Attributes already known?', ans:known, note:known ? `Saved quiz (${state.profile.source==='asked' ? 'answered' : 'inferred after a skip'})` : state.profile ? `Saved answers do not include ${A.label}` : 'No saved quiz on this profile'});
+  if(known) return {outcome:'render', source:'profile', trace, label:`Render A chip, B module, C filter; “${nm}” edits the profile`};
+  const inferable = state.tier>=3 || (state.returning && shopperVector().band(axis)!=null);
+  trace.push({n:4, q:'Inferable with confidence?', ans:inferable, note:inferable ? (state.tier>=3 ? (axis==='tone' ? (state.tier===4 ? `Yes: ${T4_INFER}` : `Yes: app language ${t.appLang} + pincode ${t.pincode} carry the match in Tier 3/4`) : `Yes: ${state.tier===4 ? T4_INFER : `app language ${t.appLang} + pincode ${t.pincode} carry the match`}; ${A.label} asked in one tap`) : 'Yes: past BPC orders (Shade 03 Mauve ×2)') : (axis==='tone' ? 'No: Tier 1/2 matches on skin, which has to be asked' : `No: Tier 1/2 matches on ${A.label}, which has to be asked`)});
+  if(inferable) return {outcome:'render', source:'inferred', trace, label:`Render “matched for you” with “${nm}”`};
+  trace.push({n:5, q:'Ask, by tier, only on intent', ans:null, note:`${quizPlan().length} taps, only when she taps the chip, a shade or “${axis==='tone' ? 'Skin like mine' : AXIS_COPY[1][axis].filter}”. Skip falls back to inference.`});
+  return {outcome:'render', source:'ask', trace, label:'Render chip and module in the “ask” state; quiz opens on intent'};
+}
+function matchDemos(pid, v){
+  const demos = demosFor(pid), axis = PRODUCTS[pid].axis || 'tone', A = AXES[axis], vb = v.band(axis);
+  const hi = state.tier>=3;
+  const W = hi ? {axis:5, lang:10, skin:2, hair:1, tone:0, region:3} : {axis:10, lang:3, skin:3, hair:1, tone:0, region:1};
+  if(axis==='skin'){ W.skin = 0; W.tone = 1; W.hair = 1; }
+  if(axis==='hair'){ W.hair = 0; W.skin = 1; W.tone = 0; }
+  const ranked = demos.map(d => {
+    const c = C[d.creator]; let s = 0; const why = [];
+    if(vb!=null) s -= A.dist(A.of(c), vb)*W.axis;
+    if(W.tone && v.tone!=null) s -= Math.abs(c.tone - v.tone)*W.tone;
+    if(langMatch(c, v.lang)){ s += W.lang; why.push(v.lang); }
+    if(W.skin && v.skin && c.skin===v.skin){ s += W.skin; why.push(c.skin); }
+    if(W.hair && v.hair && c.hair===v.hair){ s += W.hair; }
+    if(stateOf(c.region)===stateOf(v.region)){ s += W.region; why.push(stateOf(v.region)); }
+    s -= d.pdpViews/1e6; // tiny tiebreak so order is stable
+    return Object.assign({}, d, {c, s, why});
+  }).sort((a,b)=>b.s-a.s);
+  const near = d => A.dist(A.of(d.c), vb)<=1;
+  let set, closest = false;
+  if(vb!=null && axis==='tone' && v.toneInferred){
+    const base = ranked.filter(near);
+    const l = base.filter(d => langMatch(d.c, v.lang));
+    set = l.length>=2 ? l : base;
+  } else if(vb!=null){
+    const exact = ranked.filter(d => A.of(d.c)===vb);
+    if(exact.length>=2) set = exact; else { set = ranked.filter(near); closest = true; }
+    if(hi){ const l = set.filter(d => langMatch(d.c, v.lang)); if(l.length>=2) set = l; }
+  } else {
+    set = ranked.filter(d => langMatch(d.c, v.lang));
+    if(set.length<2){ set = ranked.slice(0,3); closest = true; }
+  }
+  if(set.length<2){ set = ranked.slice(0, Math.min(3, ranked.length)); closest = true; }
+  // pick up to three tiles, one per demo type where possible
+  const order = axis==='hair' ? ['washday','7day','routine'] : axis==='skin' ? ['7day','swatch','grwm'] : ['swatch','7day','grwm'];
+  const tiles = [], used = new Set();
+  for(const ty of order){ const d = set.find(x => x.type===ty && !used.has(x.creator)); if(d){ tiles.push(d); used.add(d.creator); } }
+  for(const d of set){ if(tiles.length>=3) break; if(!used.has(d.creator)){ tiles.push(d); used.add(d.creator); } }
+  for(const d of set){ if(tiles.length>=3) break; if(!tiles.includes(d)) tiles.push(d); }
+  return {ranked, set, closest, tiles, creators:new Set(set.map(d=>d.creator)).size, axis, band:vb};
+}
+function attrChips(v, m, axis){
+  axis = axis || 'tone';
+  const chips = [], set = m ? m.set : [], vb = v.band(axis);
+  if(axis==='tone'){
+    if(v.tone!=null && !v.toneInferred) chips.push('Skin like yours');
+    if(v.skin) chips.push(v.skin);
+    if(v.hair) chips.push(v.hair);
+  } else if(vb!=null){
+    chips.push(likeText(axis), bandLabel(axis, vb).replace(/^./, x=>x.toUpperCase()));
+  }
+  if(set.some(d => langMatch(d.c, v.lang))) chips.push(v.lang);
+  else if(v.lang!=='Hindi' && set.some(d => langMatch(d.c, 'Hindi'))) chips.push('Hindi');
+  const STATE_NAMES = {BR:'Bihar', MP:'Madhya Pradesh', MH:'Maharashtra', UP:'Uttar Pradesh', RJ:'Rajasthan', TN:'Tamil Nadu', KA:'Karnataka', TS:'Telangana', WB:'West Bengal'};
+  if(set.some(d => stateOf(d.c.region)===stateOf(v.region))) chips.push(STATE_NAMES[stateOf(v.region)] || stateOf(v.region));
+  return chips;
+}
+function slotRate(pid, band){
+  const axis = PRODUCTS[pid].axis || 'tone';
+  const n = demosFor(pid).filter(d => bandOf(C[d.creator], axis)===band).length;
+  return n<2 ? {rate:1, label:'full rate', n} : n<4 ? {rate:0.5, label:'half rate', n} : {rate:0, label:'cell full, no view-through', n};
+}
+/* brand matrix: rows are the product's axis bands */
+const LANG_W = {Hindi:.45, Bhojpuri:.12, Marathi:.12, Tamil:.10, Bengali:.11, Kannada:.10};
+function axisW(axis, band){ const w = AXES[axis].w; return axis==='tone' ? w[band-1] : w[band]; }
+function cellViews(pid, band, lang){ const p = PRODUCTS[pid]; return Math.round(p.totalViews*axisW(p.axis||'tone', band)*LANG_W[lang]/100)*100; }
+function cellDemos(pid, band, lang){ const axis = PRODUCTS[pid].axis || 'tone'; return demosFor(pid).filter(d => bandOf(C[d.creator], axis)===band && langMatch(C[d.creator], lang)); }
+function scarceBand(axis, band){ return axis==='tone' ? band>=5 : axis==='hair' ? band==='Curly' : band==='Dry'; }
+function cellBounty(pid, band, lang){ const v = cellViews(pid, band, lang); return 200 + (scarceBand(PRODUCTS[pid].axis||'tone', band)?150:0) + (lang!=='Hindi'?100:0) + (v>=10000?150:v>=5000?50:0); }
+function coverage(pid){ const A = AXES[PRODUCTS[pid].axis||'tone']; let cov = 0, tot = 0; for(const b of A.bands) for(const l of MATRIX_LANGS){ const v = cellViews(pid,b,l); tot += v; if(cellDemos(pid,b,l).length>=2) cov += v; } return tot ? cov/tot : 0; }
+function wantedCells(){
+  const out = [];
+  for(const pid of BPC){ const axis = PRODUCTS[pid].axis;
+    for(const b of AXES[axis].bands) for(const l of MATRIX_LANGS){
+      const n = cellDemos(pid,b,l).length, v = cellViews(pid,b,l);
+      if(n<2 && v>=3000) out.push({pid, axis, band:b, lang:l, views:v, demos:n, bounty:cellBounty(pid,b,l), key:`${pid}|${b}|${l}`});
+    } }
+  return out.sort((x,y)=>y.views-x.views);
+}
+
+/* =========================================================
+   LEDGER (slide 5 attribution rules)
+   ========================================================= */
+function logEvent(ev){ ev.id = 'e'+(++seq); ev.day = state.day; state.ledger.unshift(ev); return ev; }
+function engage(demo, kind){
+  const p = PRODUCTS[demo.product];
+  if(state.seen.has(demo.id)){
+    if(kind==='tap-to-play') logEvent({type:'engagement', pays:false, demoId:demo.id, kind:'repeat view', reason:'Repeat view from the same device never pays; the first engagement already counts'});
+    return;
+  }
+  state.seen.add(demo.id);
+  logEvent({type:'engagement', pays:true, demoId:demo.id, kind, cluster:p.cluster, reason:'Deliberate engagement logged against user × cluster; opens a 90-day window'});
+  state.lastEngaged[demo.product] = {demoId:demo.id, day:state.day};
+}
+function logImpression(demo){
+  const key = demo.id + '|' + state.day;
+  if(state.impressionsLogged.has(key)) return;
+  state.impressionsLogged.add(key);
+  logEvent({type:'engagement', pays:false, demoId:demo.id, kind:'autoplay impression', reason:'Autoplay impressions never pay; only a tap, a 5-second watch or a swatch expand counts'});
+}
+function placeOrder(method){
+  const p = PRODUCTS[state.productId]; const le = state.lastEngaged[p.id];
+  const capUsed = !!state.paidCluster[USER+'|'+p.cluster];
+  let eligible = false, reason = '';
+  if(!le) reason = 'No deliberate engagement with a demo on this cluster; an Instagram-link attribution, if any, is unchanged';
+  else if(state.day - le.day > WINDOW_DAYS) reason = 'Engagement is older than 90 days';
+  else if(capUsed) reason = 'Cap reached: one view-through payout per user × cluster per 90 days';
+  else { eligible = true; reason = 'Last-engaged demo wins; pays after delivery and the 7-day return window'; }
+  const sh = p.shades.find(s => s.code===state.shade);
+  return logEvent({type:'order', orderId:'MS'+(80214+seq*13), product:p.id, cluster:p.cluster, amount:p.price, method, status:'placed', demoId:le?le.demoId:null, eligible, reason, shade: sh ? sh.name : null});
+}
+function orderAction(id, act){
+  const o = state.ledger.find(e => e.id===id); if(!o) return;
+  if(act==='deliver' && o.status==='placed'){ o.status='delivered'; o.deliveredDay = state.day; toast(`Order ${o.orderId} delivered. Return window: ${RETURN_WINDOW} days.`); }
+  else if(act==='return' && (o.status==='placed'||o.status==='delivered')){ o.status='returned'; o.payout=0; toast(`Order ${o.orderId} returned. No view-through payout.`); }
+  else if(act==='rto' && o.status==='placed'){ o.status='rto'; o.payout=0; toast(`Order ${o.orderId} refused at the door (RTO). No payout.`); }
+  else if(act==='release' && o.status==='delivered'){
+    state.day += RETURN_WINDOW;
+    if(o.eligible){ o.status='paid'; o.payout = Math.round(o.amount*LINK_RATE*VT_SHARE); o.paidDay = state.day; state.paidCluster[USER+'|'+o.cluster] = true;
+      const d = state.demos.find(x=>x.id===o.demoId); toast(`Return window over. ${fmt(o.payout)} released to ${C[d.creator].name} in Friday's payout run.`); }
+    else { o.status='closed'; o.payout=0; toast('Return window over. Order closed; nothing to pay out on this order.'); }
+  }
+}
+function toast(msg){ state.toast = msg; renderAll(); clearTimeout(toast.t); toast.t = setTimeout(()=>{ state.toast=null; renderAll(); }, 3600); }
+function pageToast(msg){ toast(msg); }
+
+/* =========================================================
+   RENDER: shopper phone
+   ========================================================= */
+function productArt(p, shadeHex){
+  return `<mj-pa>${imgTag(IMG.product(p.id, state.shade), '', productArtSvg(p, shadeHex))}</mj-pa>`;
+}
+function productArtSvg(p, shadeHex){
+  if(p.id==='bottle') return `<svg viewBox="0 0 120 190"><rect x="35" y="30" width="50" height="150" rx="14" fill="#9aa5ad"/><rect x="45" y="10" width="30" height="26" rx="6" fill="#4b5560"/><rect x="42" y="70" width="36" height="60" rx="6" fill="#dbe2e6"/></svg>`;
+  if(p.id==='shampoo') return `<svg viewBox="0 0 120 190"><rect x="34" y="64" width="52" height="118" rx="14" fill="#0d8a95"/><rect x="51" y="44" width="18" height="22" rx="3" fill="#fff" stroke="#9fc9cd"/><path d="M60 46V28h24" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M60 46V28h24" stroke="#9fc9cd" stroke-width="1" fill="none"/><rect x="43" y="102" width="34" height="42" rx="5" fill="#fff" opacity=".92"/><text x="60" y="122" font-size="8" text-anchor="middle" fill="#0b5d65" font-family="Mukta,sans-serif" font-weight="700">ANTI</text><text x="60" y="133" font-size="8" text-anchor="middle" fill="#0b5d65" font-family="Mukta,sans-serif" font-weight="700">FRIZZ</text></svg>`;
+  if(p.id==='serum') return `<svg viewBox="0 0 120 190"><rect x="35" y="50" width="50" height="130" rx="10" fill="#f7c76a"/><rect x="48" y="18" width="24" height="40" rx="5" fill="#2b2b2b"/><rect x="56" y="10" width="8" height="14" rx="3" fill="#2b2b2b"/><rect x="42" y="95" width="36" height="44" rx="4" fill="#fff" opacity=".85"/><text x="60" y="122" font-size="9" text-anchor="middle" fill="#333" font-family="Mukta,sans-serif" font-weight="700">VIT C</text></svg>`;
+  return `<svg viewBox="0 0 120 190"><rect x="40" y="90" width="40" height="92" rx="6" fill="#2b2227"/><rect x="46" y="70" width="28" height="26" rx="3" fill="#c9b7c2"/><path d="M50 72V34c0-6 5-10 10-12 5 2 10 6 10 12v38z" fill="${shadeHex||'#8e3a4a'}"/></svg>`;
+}
+function tileFace(d, shadeHex, mode, idx){
+  const t = TONES[d.c.tone-1];
+  const bg = mode==='lite' ? '#f6f1f4' : `linear-gradient(160deg, #f8edf4, #fbe8ef)`;
+  const svg = `<svg viewBox="0 0 60 60" aria-hidden="true"><ellipse cx="30" cy="32" rx="17" ry="20" fill="${t.hex}"/><path d="M13 30a17 15 0 0 1 34 0c-4-8-9-11-17-11s-13 3-17 11z" fill="${t.hair}"/>${shadeHex?`<path d="M23 44q7-3 14 0q-7 5-14 0z" fill="${shadeHex}"/>`:(PRODUCTS[d.product] && PRODUCTS[d.product].axis==='hair' ? '' : `<circle cx="42" cy="46" r="6" fill="#f7c76a" opacity=".9"/>`)}</svg>`;
+  /* frame by demo type, cropped differently, plus the creator's portrait, so tiles of one band never look identical */
+  const ph = ['swatch','grwm','routine'].includes(d.type) ? 'apply' : 'skin';
+  return `<div class="face" style="background:${bg}">${imgTag(IMG.frame(d.product, d.c, ph), `style="position:absolute;inset:0;width:100%;height:66px;object-fit:cover;object-position:${idx==null ? (ph==='apply'?'top':'center') : ['center','top','50% 75%'][idx%3]}"`, svg)}<span class="tile-av">${avatar(d.c, 22, '#fff')}</span>
+    ${mode==='auto' ? '<span class="live">AUTO</span>' : mode==='lite' ? `<span class="lite">${esc(cp('media'))}</span>` : ''}
+    <span class="pl">▶</span></div>`;
+}
+function swatchStrip(d, shadeHex){
+  const t = TONES[d.c.tone-1];
+  return `<div class="a-strip" aria-hidden="true"><i style="background:${t.hex}"></i><i style="background:${shadeHex||'#f7c76a'}"></i><i style="background:${t.hex}"></i></div><span class="lite" style="position:absolute;left:5px;top:5px;font-size:9px;font-weight:700;color:#333;background:#fff;border-radius:4px;padding:0 4px;border:1px solid #ddd">${esc(cp('media'))}</span><span class="pl">▶</span>`;
+}
+function mediaMode(){ return state.tier===1 ? 'auto' : state.tier===2 ? 'std' : state.tier===3 ? 'lite' : 'strip'; }
+
+function renderModule(p, g, v, m){
+  const shade = p.shades.find(s=>s.code===state.shade);
+  const shadeHex = shade ? shade.hex : null;
+  const mode = mediaMode();
+  const axis = p.axis || 'tone';
+  if(g.outcome==='tierC'){
+    /* closest demo on a sibling product of the same axis family: Rani on the lipstick, Shraddha on the shampoo */
+    const altPid = axis==='hair' ? 'shampoo' : 'lipstick', altCid = axis==='hair' ? 'c5' : 'c1';
+    const alt = (axis==='skin' || altPid===p.id) ? null : (demosFor(altPid).find(d => d.creator===altCid) || demosFor(altPid)[0]);   // a lipstick is no sibling of a serum
+    const altC = alt ? C[alt.creator] : null, altP = alt ? PRODUCTS[alt.product] : null;
+    const altSh = alt && alt.shade ? altP.shades.find(s=>s.code===alt.shade) : null;
+    const w = wantedCells().find(c => c.pid===p.id);
+    return `<div class="a-module honest">
+      <div class="a-mhead"><div class="ic">!</div><div><div class="a-mtitle">${esc(cp('noDemo'))}</div><div class="a-msub">${esc(cp('noDemoSub'))}</div></div></div>
+      ${alt ? `<div class="a-tiles" style="grid-template-columns:1fr 2fr"><button class="a-tile" data-act="open-demo" data-id="${alt.id}">${tileFace(Object.assign({c:altC},alt), altSh ? altSh.hex : null, mode==='auto'?'std':mode)}<div class="cap"><b>${esc(altC.name)}</b><span>${esc(altP.name)}${altSh ? ' · '+esc(altSh.name) : ''}</span><span class="inh" style="color:#9a4e0a;background:#fdeedd">Different product</span></div></button>
+      <div style="font-size:11.5px;color:#6b5a48;padding:4px 2px">Closest demo from a creator like you, on a sibling product. Shown as what it is, never as this product.</div></div>` : ''}
+      <div class="a-mrow"><button class="a-mbtn" data-act="puchho-open">${esc(cp('puchho'))} · reviews + ingredients</button></div>
+      ${w ? `<div class="a-note">Demo-Wanted bounty auto-posted: ${fmt(w.bounty)} for this cell (${num(w.views)} views a month). See the Creator tab.</div>` : ''}
+    </div>`;
+  }
+  if(g.source==='ask'){
+    const total = new Set(demosFor(p.id).map(d=>d.creator)).size;
+    return `<div class="a-module ask">
+      <div class="a-mhead"><div class="ic">▶</div><div><div class="a-mtitle">${total} creators tried this on real ${axis==='hair' ? 'hair' : 'skin'}</div><div class="a-msub">${quizPlan().length} taps to see the ones with ${axis==='hair' ? 'hair' : 'skin'} like yours. ${esc(cp('privacy'))}</div></div></div>
+      <div class="a-mrow"><button class="a-mbtn go" data-act="open-quiz" data-from="module">${esc(cp('ask'))}</button><button class="a-mbtn" data-act="puchho-open">${esc(cp('puchho'))}</button></div>
+    </div>`;
+  }
+  const vb = v.band(axis), langOnly = axis!=='tone' && vb==null;
+  const chips = attrChips(v, m, axis);
+  let title;
+  if(langOnly){ const n = new Set(m.set.filter(d => langMatch(d.c, v.lang)).map(d=>d.creator)).size || m.creators; title = `${esc(cp('matched'))} · ${n} creator${n===1?'':'s'} in ${esc(v.lang)}`; }
+  else title = g.source==='inferred' ? `${esc(cp('matched'))} · ${esc(cp('tried',{n:m.creators}))}` : esc(cp('tried',{n:m.creators}));
+  const chose = shade ? m.set.filter(d=>d.shade===state.shade).length : 0;
+  const sub = shade && chose ? cp('chose',{m:chose, shade:shade.name}) : (g.source==='inferred' ? `From ${v.basis}` : `From ${v.basis}`);
+  const inherit = p.coverage==='B';
+  return `<div class="a-module ${inherit?'inherit':''}">
+    <div class="a-mhead"><div class="ic">✓</div><div><div class="a-mtitle">${title}</div><div class="a-msub">${esc(sub)}</div></div></div>
+    <div class="a-attr">${chips.map(c=>`<span>${esc(c)}</span>`).join('')}</div>
+    ${m.closest && !langOnly ? `<div class="a-note">${esc(cp('closest'))}</div>` : ''}
+    <div class="a-tiles">${m.tiles.map((d,i)=>`<button class="a-tile" data-act="open-demo" data-id="${d.id}">${mode==='strip' ? `<div class="face" style="padding:0;display:block;position:relative">${swatchStrip(d, shadeHex)}</div>` : tileFace(d, shadeHex, mode==='auto' ? (i===0?'auto':'std') : mode, i)}<div class="cap"><b>${esc(d.c.name)}</b><span>${TYPE_LABEL[d.type]}${d.shade ? ' · '+esc(p.shades.find(s=>s.code===d.shade).name) : ''}</span>${d.inherited ? `<span class="inh">${esc(cp('inherit'))}</span>` : ''}</div></button>`).join('')}</div>
+    ${inherit ? `<div class="a-note">Demos come from the ${esc(p.inheritedFrom)} listing: same barcode, confirmed by this seller. A return-rate circuit breaker removes them if this listing's returns exceed the cluster median.</div>` : ''}
+    <div class="a-mrow"><button class="a-mbtn" data-act="open-quiz" data-from="edit">${esc(cp('notMine'))}</button><button class="a-mbtn" data-act="puchho-open">${esc(cp('puchho'))}</button></div>
+  </div>`;
+}
+
+/* phone chrome: line icons, review metadata */
+const PH_ICON = {
+  back:'<path d="M15 5l-7 7 7 7"/>',
+  search:'<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/>',
+  heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
+  cart:'<path d="M3 4h2.2l2.2 11h10.2l2-8H7"/><circle cx="9.5" cy="19" r="1.3"/><circle cx="16.5" cy="19" r="1.3"/>',
+  pin:'<path d="M12 21s-6-6.2-6-11a6 6 0 0 1 12 0c0 4.8-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/>',
+  share:'<path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/>',
+  info:'<circle cx="12" cy="12" r="8"/><path d="M12 11v5M12 8h.01"/>',
+  ret:'<path d="M4 12a8 8 0 1 0 2.3-5.6L4 8.7"/><path d="M4 4v4.7h4.7"/>',
+  cod:'<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5v.01M17.5 14.5v.01"/>',
+  tag:'<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.4"/>',
+  thumb:'<path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.3 1 2 2.5L12.5 10H19a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 17.8 20H7"/>',
+  plus:'<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/>',
+  down:'<path d="M6 9l6 6 6-6"/>',
+  up:'<path d="M6 15l6-6 6 6"/>',
+};
+const ic = (n, sz) => `<svg viewBox="0 0 24 24" width="${sz||22}" height="${sz||22}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${PH_ICON[n]}</svg>`;
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const STAR_WORD = {5:'Excellent', 4:'Very Good', 3:'Good', 2:'Average', 1:'Poor'};
+const ratingWord = x => x>=4.5 ? 'Excellent' : x>=4 ? 'Very Good' : x>=3.5 ? 'Good' : 'Average';
+const pctOff = p => Math.round((p.mrp - p.price)/p.mrp*100);
+function revMeta(r, i){   // stable, made-up dates and helpful counts
+  const h = [...r.who].reduce((s,ch)=>s+ch.charCodeAt(0), 0);
+  const d = new Date(2026, 8, 28 - ((i*13 + h) % 80));
+  return {date:`${d.getDate()} ${MONTHS[d.getMonth()]}, ${d.getFullYear()}`, helpful: h % 37 + 2};
+}
+
+function renderScreen(){
+  const p = PRODUCTS[state.productId], g = runGates(), v = shopperVector();
+  const axis = p.axis || 'tone', t = TIERS[state.tier];
+  const m = g.outcome==='render' && g.source!=='ask' ? matchDemos(p.id, v) : null;
+  const shade = p.shades.find(s=>s.code===state.shade);
+  const showChip = g.outcome==='render';
+  const matched = !!m;
+  if(matched && mediaMode()==='auto' && m.tiles[0]) logImpression(m.tiles[0]);
+  const mine = (REVIEWS[p.id]||[]).filter(r => revLike(r, v, axis));
+  const revs = (REVIEWS[p.id]||[]).filter(r => !state.filterMine || revLike(r, v, axis));
+  const nudge = state.tier===2 && matched && cp('nudge');
+
+  // 1. status bar and app bar
+  const status = `<div class="a-status"><span>10:06</span><span class="sp"></span><span class="mk">mock</span><svg viewBox="0 0 18 12" width="16" height="11" aria-hidden="true"><rect x="0" y="8" width="3" height="4" fill="#111"/><rect x="5" y="5" width="3" height="7" fill="#111"/><rect x="10" y="2" width="3" height="10" fill="#111"/><rect x="15" y="0" width="3" height="12" fill="#bbb"/></svg><svg viewBox="0 0 24 12" width="22" height="11" aria-hidden="true"><rect x=".5" y=".5" width="20" height="11" rx="2.5" fill="none" stroke="#111"/><rect x="2.5" y="2.5" width="13" height="7" rx="1" fill="#111"/><rect x="21.5" y="4" width="2" height="4" rx="1" fill="#111"/></svg></div>`;
+  const bar = `<div class="a-bar"><span class="ico">${ic('back',24)}</span><span class="sp"></span><span class="ico">${ic('search')}</span><span class="ico">${ic('heart')}</span><button class="ico" data-act="add-cart" aria-label="Cart">${ic('cart')}</button></div>`;
+  // 2. delivery banner (the pincode the gates infer from)
+  const deliv = `<div class="a-deliv">${ic('pin',16)}<span>${state.tier===1 ? 'Add delivery location to get extra discount ›››' : `Delivering to <b>${esc(t.city)} · ${t.pincode}</b> ›`}</span></div>`;
+  // 3. image card with the chip
+  const img = `<div class="a-imgcard"><div class="a-img">${productArt(p, shade?shade.hex:null)}<div class="a-dots"><i></i><i></i><i></i><i></i></div>
+    ${showChip ? `<button class="a-chip" data-act="open-chip"><span class="play">▶</span>${esc(cp('chip'))}</button>` : ''}<span class="a-supp">s-${String(48192 + Object.keys(PRODUCTS).indexOf(p.id)).padStart(5,'0')}${p.cluster.replace(/\D/g,'').slice(-4)}</span><span class="a-coll" aria-hidden="true">${ic('plus',18)}</span></div></div>`;
+  // 4-5. title, price, offers, rating
+  const title = `<div class="a-sec"><div class="a-tblk"><div class="a-title">${esc(p.name)}${shade ? ' · '+esc(p.variant)+' '+esc(shade.code)+' '+esc(shade.name) : ''}</div><div class="a-ws"><button type="button">${ic('heart',20)}<span>Wishlist</span></button><button type="button">${ic('share',20)}<span>Share</span></button></div></div>
+    <div class="a-pr"><b>${fmt(p.price)}</b><s>${num(p.mrp)}</s><span class="off">${pctOff(p)}% off</span><span class="i">${ic('info',14)}</span></div>
+    <div class="a-disc">Discount Applied ✓</div>
+    ${state.tier<=3 ? `<div class="a-offer">${fmt(p.price-20)} with 1 Special Offer ›</div>` : ''}
+    <div class="a-deal">Deal ends in <span class="cd">01h : 53m : 34s</span></div>
+    <div class="a-ratingrow"><span class="a-rpill">${p.rating} ★</span><span class="n">(${num(p.ratings)})</span></div></div>`;
+  // 6. trust strip, then our tier-specific trust line
+  const trust = `<div class="a-sec"><div class="a-tstrip"><div>${ic('ret',24)}7 Days Easy Return</div><div>${ic('cod',24)}Cash on Delivery</div><div>${ic('tag',24)}Lowest Price</div></div>
+    ${p.suitability && g.outcome!=='plain' ? `<div class="a-trust"><span class="t">✓</span><span>${state.tier===4 ? (([wa, cb]) => `<button class="a-tlink" data-act="t4-share">${esc(wa)}</button> · <button class="a-tlink" data-act="t4-call">${esc(cb)}</button>`)(cp('trust', {price: fmt(p.price), brand: fmt(p.price+50)}).split(' · ')) : esc(cp('trust', {price: fmt(p.price), brand: fmt(p.price+50)}))}</span></div>` : ''}</div>`;
+  // 7. select shade / hair type / skin type, with the Meri Jaisi module
+  let variant = '';
+  if(p.suitability){
+    const head = p.shades.length ? 'Select Shade' : axis==='hair' ? 'Hair type' : 'Skin type';
+    variant = `<div class="a-sec"><div class="a-h">${head}</div>${p.shades.length ? `<div class="a-pills">${p.shades.map(s=>`<button class="a-sw ${s.code===state.shade?'is-on':''}" data-act="shade" data-code="${s.code}" aria-label="${esc(s.name)}"><i style="background:${s.hex}"></i>${esc(s.name)}</button>`).join('')}</div>` : `<div class="a-swname">${axis==='hair' ? 'Suits wavy and curly hair per the listing' : 'Suits oily, combination and normal skin per the listing'}</div>`}
+      ${g.outcome==='plain' ? '' : renderModule(p, g, v, m)}</div>`;
+  } else {
+    variant = `<div class="a-sec"><div class="a-h">Colour</div><div class="a-swname">Steel grey</div><div class="a-plain">Not a shade, skin-type or hair-type product, so the Proof Layer adds nothing here.</div></div>`;
+  }
+  // 8. product highlights
+  const origin = (p.details.find(d=>d[0]==='Country of origin') || [0,'India'])[1];
+  const hl = `<div class="a-sec"><div class="a-hhead"><div class="a-h" style="margin:0">Product Highlights</div><span class="a-copy">COPY</span></div>
+    <dl class="a-hl">${p.details.map(([k,val])=>`<div><dt>${esc(k)}</dt><dd>${esc(val)}</dd></div>`).join('')}</dl>
+    <button class="a-addl" data-act="addl" aria-expanded="${!!state.addl}"><span>Additional Details</span>${ic(state.addl?'up':'down',18)}</button>
+    ${state.addl ? `<div class="a-addltxt">Sold by <b>${esc(p.seller)}</b>${p.verified?' <span class="v">Verified</span>':''} · ${p.sellerRating} ★<br>Country of origin: ${esc(origin)}</div>` : ''}</div>`;
+  // 9. ratings and reviews
+  const thumbs = [];
+  if(matched) m.tiles.slice(0,3).forEach((d, i) => { const ph = ['swatch','grwm','routine'].includes(d.type) ? 'apply' : 'skin';   // same rule as the matched tiles: frame by demo type, crop by position, portrait top-left
+    thumbs.push(`<button class="a-th" data-act="open-demo" data-id="${d.id}">${imgTag(IMG.frame(d.product, d.c, ph), `style="object-position:${['center','top','50% 75%'][i%3]}"`, avatarSvg(d.c, 80))}<span class="tile-av">${avatar(d.c, 22, '#fff')}</span><span class="tg">${esc(likeText(axis))}</span><span class="pl">▶</span></button>`); });
+  const codes = p.shades.length ? p.shades.map(s=>s.code) : [null];
+  while(thumbs.length<4){ const code = codes[thumbs.length % codes.length], sh = p.shades.find(s=>s.code===code);
+    thumbs.push(`<span class="a-th">${imgTag(IMG.product(p.id, code), '', productArtSvg(p, sh?sh.hex:null))}</span>`); }
+  const chipsRow = p.suitability ? `<div class="a-chips"><button class="a-fchip ${!state.filterMine?'is-on':''}" data-act="filter" data-on="0">All</button>
+    ${matched ? `<button class="a-fchip ${state.filterMine?'is-on':''}" data-act="filter" data-on="1">${esc(cp('filter'))} (${mine.length + m.set.length})</button>` : (g.outcome==='render' ? `<button class="a-fchip" data-act="open-quiz" data-from="filter">${esc(cp('filter'))}</button>` : '')}
+    <button class="a-fchip">${esc(cp('withVideo'))}</button></div>` : '';
+  const demoRows = state.filterMine && matched ? m.set.slice(0,2).map(d=>`<div class="a-rc a-rcdemo" role="button" tabindex="0" data-act="open-demo" data-id="${d.id}"><div class="st">▶ ${TYPE_LABEL[d.type]} demo <span>• ${esc(d.c.name)}</span></div><p>Video demo${d.shade?' of '+esc(p.shades.find(s=>s.code===d.shade).name):''}, sealed pack opened on camera.</p><div class="by">${avatar(d.c,20)} ~${esc(d.c.name)}<span class="lk">${esc(likeText(axis))}</span></div></div>`).join('') : '';
+  const revCards = revs.map((r,i)=>{ const mt = revMeta(r, i); const like = matched && v.band(axis)!=null && (axis!=='tone' || r.tone) && revLike(r, v, axis);
+    return `<div class="a-rc"><div class="st">${r.star} ★ ${STAR_WORD[r.star]} <span>• Posted on ${mt.date}</span></div><p>${esc(r.txt)}</p><div class="by">~${esc(r.who)}${like ? `<span class="lk">${esc(likeText(axis))}</span>` : ''}<span class="hp">${ic('thumb',15)} Helpful (${mt.helpful})</span></div></div>`; }).join('');
+  const reviews = `<div class="a-sec"><div class="a-h">Customer Ratings &amp; Reviews</div>
+    <div class="a-rsum"><span class="a-rbig">${p.rating} ★ ${ratingWord(p.rating)}</span></div><div class="a-rsum2">${num(p.ratings)} ratings | ${num(Math.round(p.ratings*0.332))} reviews</div>
+    <div class="a-sub">Customer photos and videos</div><div class="a-thumbs">${thumbs.join('')}</div>
+    ${chipsRow}${demoRows}${revCards}<button class="a-viewall" type="button">VIEW ALL REVIEWS ›</button></div>`;
+  // 10. people also viewed: the other BPC products
+  const pav = `<div class="a-sec" style="border-bottom:0"><div class="a-pav-h">PEOPLE ALSO VIEWED</div><div class="a-pav">${BPC.filter(x=>x!==p.id).slice(0,2).map(pid=>{ const q = PRODUCTS[pid], sh = q.shades.find(s=>s.code===q.defaultShade);
+    return `<button class="a-pc" data-act="product" data-p="${pid}"><span class="im">${imgTag(IMG.product(pid, q.defaultShade), '', productArtSvg(q, sh?sh.hex:null))}<span class="hrt">${ic('heart',16)}</span></span><span class="nm">${esc(q.name)}</span><span class="pp"><b>${fmt(q.price)}</b> <s>${num(q.mrp)}</s> <span class="off">${pctOff(q)}% off</span></span><span class="a-rpill sm">${q.rating} ★</span></button>`; }).join('')}</div></div>`;
+  // 11. sticky buy bar
+  const buy = `<div class="a-buy">${nudge ? `<div class="a-nudge">⚡ ${esc(nudge)}</div>` : ''}<button class="a-buyfull" data-act="buy-now">» Buy at ${fmt(p.price)}</button></div>`;
+  let overlay = '';
+  if(state.quiz) overlay += renderQuiz(p, v);
+  if(state.puchho) overlay += renderPuchho(p, m);
+  if(state.order) overlay += renderOrder(p, shade);
+  if(state.player) overlay += renderPlayer(p, shade);
+  if(state.toast) overlay += `<div class="a-toast">${esc(state.toast)}</div>`;
+  document.getElementById('screen').innerHTML = status + bar + `<div class="a-scroll" id="ascroll">${deliv}${img}${title}${trust}${variant}${hl}${reviews}${pav}</div>` + buy + overlay;
+  mountFrames();
+  const hint = document.getElementById('hint');
+  hint.textContent = g.outcome==='plain' ? 'Gate 1 fails: a non-suitability product gets the ordinary PDP. Switch product to see the proof appear.'
+    : g.outcome==='tierC' ? 'Gate 2 fails: fewer than two demos. The PDP says so honestly, offers Q&A from reviews and ingredients, and posts a bounty.'
+    : g.source==='ask' ? `Tap the chip on the image, a demo, or “${cp('filter')}” to answer the quiz. It never opens on page load.`
+    : g.source==='inferred' ? `Matched from inference, nothing asked. “${cp('notMine')}” opens the one-tap correction.`
+    : 'Matched from the saved profile. Tap a demo to watch, then » Buy to follow the money into the Ledger.';
+}
+
+const HAIR_ICON = {
+  Straight:'<path d="M15 6v36M24 6v36M33 6v36"/>',
+  Wavy:'<path d="M13 6q6 6 0 12t0 12t0 12M24 6q6 6 0 12t0 12t0 12M35 6q6 6 0 12t0 12t0 12"/>',
+  Curly:'<path d="M14 6c7 0 7 6 0 6s-7 6 0 6 7 6 0 6-7 6 0 6 7 6 0 6M32 6c7 0 7 6 0 6s-7 6 0 6 7 6 0 6-7 6 0 6 7 6 0 6"/>',
+};
+function renderQuiz(p, v){
+  const q = state.quiz, plan = quizPlan(), step = plan[q.step], n = plan.length;
+  const t4 = state.tier===4, axis = p.axis || 'tone';
+  const faces = `<div class="a-faces">${TONES.map(t=>`<button class="a-face ${q.a.tone===t.id?'is-on':''}" data-act="quiz-pick" data-k="tone" data-v="${t.id}" aria-label="Skin tone option ${t.id} of 6">${avatar({tone:t.id},38,'#f7eef4')}</button>`).join('')}</div>`;
+  const opts = (k, list) => `<div class="a-opts">${list.map(o=>`<button class="a-opt ${q.a[k]===o?'is-on':''}" data-act="quiz-pick" data-k="${k}" data-v="${o}">${o}</button>`).join('')}</div>`;
+  const q1 = `<div class="a-q">${esc(cp('q1'))}${t4?' <span class="a-audio" aria-hidden="true">🔊</span>':''}</div><div class="a-priv">${esc(cp('privacy'))}</div>`;
+  let body = '';
+  if(step==='band'){
+    if(axis==='tone') body = `${q1}
+      ${faces}
+      <div class="a-priv">${state.tier<=2 ? 'No label is ever shown; we only ever say “like you”.' : ''}</div>`;
+    else if(axis==='hair') body = `${q1}<div class="a-hcards">${AXES.hair.bands.map(b=>`<button class="a-hcard ${q.a.hair===b?'is-on':''}" data-act="quiz-pick" data-k="hair" data-v="${b}"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">${HAIR_ICON[b]}</svg>${b}</button>`).join('')}</div>`;
+    else body = `${q1}${opts('skin', AXES.skin.bands)}`;
+  } else if(step==='other'){
+    if(axis==='tone') body = `<div class="a-q">${esc(cp('q2'))}</div><div class="a-og">Skin</div>${opts('skin', AXES.skin.bands)}
+      <div class="a-og">Hair</div>${opts('hair', AXES.hair.bands)}`;
+    else if(axis==='hair') body = `<div class="a-q">${esc(cp('q2'))}</div><div class="a-og">Skin tone (optional)</div>${faces}<div class="a-og">Skin</div>${opts('skin', AXES.skin.bands)}`;
+    else body = `<div class="a-q">${esc(cp('q2'))}</div><div class="a-og">Skin tone (optional)</div>${faces}<div class="a-og">Hair</div>${opts('hair', AXES.hair.bands)}`;
+  } else if(step==='lang'){
+    const langs = state.tier===1 ? ['English','Hinglish','Hindi','Marathi','Tamil'] : ['Hindi','Bhojpuri','Marathi','Bengali','Tamil','Kannada'];
+    const pre = state.tier===2 ? TIERS[2].appLang : null;
+    if(pre && !q.a.lang) q.a.lang = pre;
+    body = `<div class="a-q">${esc(cp('q3'))}</div>${pre?`<div class="a-priv">Pre-filled from your app language. Change it if you like.</div>`:''}${opts('lang', langs)}`;
+  } else if(step==='under'){
+    body = `<div class="a-q">${esc(cp('q4'))}</div><div class="a-priv">Optional. Helps with foundation and lip shades.</div>${opts('under', ['Warm','Cool','Neutral','Not sure'])}`;
+  }
+  const can = step==='band' ? q.a[axis]!=null : step==='other' ? (axis==='tone' ? !!(q.a.skin && q.a.hair) : true) : step==='lang' ? !!q.a.lang : true;
+  const last = q.step===n-1;
+  return `<div class="a-dim" data-act="quiz-close" data-self="1"><div class="a-sheet" role="dialog" aria-label="Quiz"><div class="a-handle"></div>
+    <div class="a-sh"><span class="step">${q.step+1} of ${n}</span>${q.from==='edit' ? '<span class="step">· editing saved answers</span>' : ''}<button class="x" data-act="quiz-close" aria-label="Close">×</button></div>
+    ${body}
+    <button class="a-cta" data-act="quiz-next" ${can?'':'disabled'}>${esc(last ? cp('done') : cp('next'))}</button>
+    <button class="a-skip" data-act="quiz-skip">${esc(cp('skip'))}${t4 || state.tier===3 ? '' : ' · we’ll infer instead'}</button>
+    ${q.from==='edit' && state.profile ? `<button class="a-skip" style="color:var(--red)" data-act="delete-profile">Delete my saved answers</button>` : ''}
+  </div></div>`;
+}
+
+function renderPlayer(p, shade){
+  const pl = state.player, d = state.demos.find(x=>x.id===pl.demoId), c = C[d.creator], t = TONES[c.tone-1];
+  const dur = pl.dur, w = pl.watched, pct = Math.min(100, w/dur*100);
+  const lite = state.tier>=3;
+  const prod = PRODUCTS[d.product];
+  const sh = d.shade ? prod.shades.find(s=>s.code===d.shade) : null;
+  const sealedOn = w>=2, skinOn = w>=5, phase = w<2 ? 'Opening the sealed pack' : w<5 ? 'Applying' : w<dur ? (prod.axis==='hair' ? 'On hair' : 'On skin') : 'Finished';
+  const scene = `<svg viewBox="0 0 320 420" aria-hidden="true"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2537"/><stop offset="1" stop-color="#1b1119"/></linearGradient></defs>
+    <rect width="320" height="420" fill="url(#bg)"/>
+    ${prod.axis==='hair' ? (w<5 ? `<polygon points="${frizzPts()}" fill="${t.hair}"/>` : `<ellipse cx="160" cy="190" rx="100" ry="114" fill="${t.hair}"/>`) : ''}<ellipse cx="160" cy="190" rx="84" ry="104" fill="${t.hex}"/>
+    <path d="M76 180a84 90 0 0 1 168 0c-20-44-50-62-84-62s-64 18-84 62z" fill="${t.hair}"/>
+    <ellipse cx="128" cy="180" rx="9" ry="5" fill="#2a1a16"/><ellipse cx="192" cy="180" rx="9" ry="5" fill="#2a1a16"/>
+    ${sh ? `<path d="M128 246q32 ${w>=3?'-14':'-6'} 64 0q-32 ${w>=3?'22':'14'} -64 0z" fill="${w>=3 ? sh.hex : '#7a4a44'}" opacity="${w>=3?1:.7}"/>` : (prod.axis==='hair' ? '' : `<circle cx="205" cy="214" r="${w>=3?16:0}" fill="#f7c76a" opacity=".55"/>`)}
+    <g transform="translate(22 300)" opacity="${w<2?1:.55}"><rect width="70" height="96" rx="8" fill="#fbe8ef"/><rect x="8" y="10" width="54" height="${w<1?96:40}" rx="6" fill="${sh?sh.hex:'#f7c76a'}" opacity=".85"/><text x="35" y="86" text-anchor="middle" font-size="9" fill="#5b2a4d" font-family="Mukta,sans-serif" font-weight="700">${w<1?'SEALED':'OPENED'}</text></g>
+    ${lite ? `<text x="160" y="400" text-anchor="middle" font-size="12" fill="#cbbac7" font-family="Mukta,sans-serif">240p</text>`:''}</svg>`;
+  return `<div class="a-player" role="dialog" aria-label="Demo player">
+    <div class="a-ph">${avatar(c,34,'#3a2537')}<div><div class="nm">${esc(c.name)} · ${esc(TYPE_LABEL[d.type])}</div><div class="lk">${esc(likeText(prod.axis||'tone'))}${(prod.axis==='hair'?c.hair:c.skin)?' · '+esc(prod.axis==='hair'?c.hair:c.skin):''} · ${esc(c.lang)} · ${esc(c.region.split(',')[0])}</div></div><button class="x" data-act="player-close" aria-label="Close">×</button></div>
+    <div class="a-media">${scene}<div id="a-frames-slot"></div>
+      <div class="a-tag tl ${sealedOn?'on':''}"><span class="ck">✓</span> Sealed pack · 0:02</div>
+      <div class="a-tag bl ${skinOn?'on':''}"><span class="ck">✓</span> On ${prod.axis==='hair' ? 'hair' : 'skin'} ≥ 5 s · 0:05–0:${String(Math.min(dur,13)).padStart(2,'0')}</div>
+      <div class="a-tag tr on">${lite ? esc(cp('media')) : (pl.kind==='autoplay' ? 'Autoplay' : 'Tap to play')}</div>
+      <div class="a-swx ${pl.swatch?'on':''}" data-act="swatch-close"><div><b>${esc(sh?sh.name:prod.name)} on ${prod.axis==='hair' ? 'hair' : 'skin'} like yours</b><div class="band"><i style="background:${t.hex}"></i><i style="background:${sh?sh.hex:'#f7c76a'}"></i><i style="background:${t.hex}"></i></div>Swatch expand counts as deliberate engagement.</div></div>
+    </div>
+    <div class="a-prog"><i style="width:${pct}%"></i></div>
+    <div class="a-pinfo"><span>${esc(phase)} · 0:${String(Math.min(w,dur)).padStart(2,'0')} / 0:${String(dur).padStart(2,'0')}</span><span>${pl.engaged ? 'Engagement logged' : (w>=5 ? 'Engagement logged' : 'Watch 5 s or tap swatch to count')}</span></div>
+    <div class="a-pacts"><button class="alt" data-act="didnt-suit">${esc(cp('suit'))}</button><button class="buy" data-act="buy-from-player">${esc(cp('buy'))}</button><button class="alt" data-act="swatch-expand" style="grid-column:1/-1">${esc(cp('swatch'))}</button>
+    ${d.inherited ? `<button class="wide">${esc(cp('inherit'))}: demo from the ${esc(prod.inheritedFrom)} listing, same barcode</button>` : (d.product!==p.id ? `<button class="wide">Different product: ${esc(prod.name)}</button>` : `<button class="wide">${esc(cp('back'))}</button>`)}</div>
+  </div>`;
+}
+
+/* Player frames: one persistent layer per player session (so the 250 ms crossfade survives the 1-second re-render).
+   sealed < 2 s, apply < 5 s, skin after; a missing frame shows the SVG scene underneath. */
+function playerFrames(){
+  const pl = state.player;
+  if(playerFrames.pl !== pl){
+    const d = state.demos.find(x=>x.id===pl.demoId), c = C[d.creator];
+    const el = document.createElement('div'); el.className = 'a-frames';
+    el.innerHTML = ['sealed','apply','skin'].map(ph => { const src = IMG.frame(d.product, c, ph); return IMG_BAD.has(src) ? '' : `<img src="${src}" alt="" data-ph="${ph}" onerror="frameFail(this)">`; }).join('') + '<div class="a-illus">Illustrative frame</div>';
+    playerFrames.pl = pl; playerFrames.el = el;   // all three images start loading now (preload)
+  }
+  return playerFrames.el;
+}
+function frameFail(img){
+  const src = img.getAttribute('src'), el = img.parentNode, wasOn = img.classList.contains('on');
+  if(!IMG_BAD.has(src)){ IMG_BAD.add(src); console.warn('missing image', src); }
+  img.remove(); if(wasOn && el) el.classList.remove('has');
+}
+function mountFrames(){
+  const slot = document.getElementById('a-frames-slot'); if(!slot || !state.player) return;
+  const el = playerFrames(); slot.replaceWith(el); void el.offsetWidth;   // re-attach before changing classes so the fade runs
+  const w = state.player.watched, ph = w<2 ? 'sealed' : w<5 ? 'apply' : 'skin';
+  if(el.dataset.ph === ph) return;
+  el.querySelectorAll('img.prev').forEach(i=>i.classList.remove('prev'));
+  const prev = el.querySelector('img.on');
+  if(prev){ prev.classList.remove('on'); prev.classList.add('prev'); setTimeout(()=>prev.classList.remove('prev'), 300); }
+  const next = el.querySelector(`img[data-ph="${ph}"]`); if(next) next.classList.add('on');
+  el.classList.toggle('has', !!next); el.dataset.ph = ph;
+}
+
+function renderPuchho(p, m){
+  const qa = QA[p.id], lang = state.tier===1 ? 'en' : 'hi';
+  const chips = qa ? qa.chips[lang] : [];
+  const items = state.puchho.items.map(it => it.route
+    ? `<div class="a-ans route"><div><b>Q:</b> ${esc(it.q)}</div>${esc(it.a)}<div class="a-src">↪ Routed to ${esc(it.creator)} · she is paid ₹5 when she answers</div></div>`
+    : `<div class="a-ans"><div><b>Q:</b> ${esc(it.q)}</div>${esc(it.a)}<div class="a-src">${it.src}</div></div>`).join('');
+  return `<div class="a-dim" data-act="puchho-close" data-self="1"><div class="a-sheet" role="dialog" aria-label="Ask"><div class="a-handle"></div>
+    <div class="a-sh"><b>${esc(cp('puchho'))}</b><span class="step">· answers only from demos, matched reviews and the ingredient list</span><button class="x" data-act="puchho-close" aria-label="Close">×</button></div>
+    <div class="a-qa">${chips.map(q=>`<button class="a-qchip" data-act="puchho-ask" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>
+    <form class="a-ask" data-form="puchho"><input name="q" placeholder="${state.tier===1?'Type a question':'Apna sawaal likhein'}" autocomplete="off"><button type="submit">${state.tier===4?'🎤':'↑'}</button></form>
+    <div class="a-qa">${items}</div>
+  </div></div>`;
+}
+function answer(q){
+  const p = PRODUCTS[state.productId], qa = QA[p.id], lang = state.tier===1 ? 'en' : 'hi';
+  const lq = q.toLowerCase();
+  const hit = qa && qa.items.find(it => it.k.some(k => lq.includes(k)));
+  if(hit){
+    let src = '';
+    if(hit.demo){ const d = state.demos.find(x=>x.id===hit.demo); src = `▶ From ${esc(C[d.creator].name)}'s ${TYPE_LABEL[d.type]} demo · ${hit.at}`; }
+    else if(hit.review) src = '☆ From reviews and the ingredient list; no demo yet';
+    else src = '≡ From the listing';
+    state.puchho.items.unshift({q, a:hit[lang]||hit.hi, src});
+    logEvent({type:'question', pays:false, kind:'answered from demo', reason:`"${q}" answered from ${hit.demo?'a demo transcript':'reviews and ingredients'}; no payout involved`});
+  } else {
+    const v = shopperVector(); const m = matchDemos(p.id, v); const d = m.tiles[0] || demosFor('lipstick')[0];
+    const cn = C[d.creator].name;
+    state.puchho.items.unshift({q, route:true, creator:cn, a: lang==='en' ? 'Nothing in the demos, matched reviews or ingredient list answers this, so we did not guess.' : 'Demos, reviews ya ingredients mein iska jawab nahi mila, isliye hum andaaza nahi laga rahe.'});
+    logEvent({type:'question', pays:true, kind:'routed to creator', reason:`"${q}" routed to ${cn}; ₹5 paid answer when she replies`});
+  }
+}
+
+function renderOrder(p, shade){
+  const o = state.order;
+  if(o.placed){
+    const ev = state.ledger.find(e=>e.id===o.placed);
+    const d = ev.demoId ? state.demos.find(x=>x.id===ev.demoId) : null;
+    return `<div class="a-dim" data-act="order-close" data-self="1"><div class="a-sheet"><div class="a-handle"></div>
+      <div class="a-conf"><div class="ok">✓</div><b style="font-size:16px">Order placed</b><div class="small">${ev.orderId} · ${esc(ev.method)} · delivery by Saturday</div></div>
+      <div class="a-attrib"><b>Attribution</b><br>${d ? `Last-engaged demo: ${esc(C[d.creator].name)}'s ${TYPE_LABEL[d.type]}. ${ev.eligible ? `View-through payout of ${fmt(ev.amount*LINK_RATE*VT_SHARE)} (${Math.round(VT_SHARE*100)}% of the link rate) releases after delivery plus the 7-day return window.` : esc(ev.reason)+'.'}` : esc(ev.reason)+'.'}</div>
+      <button class="a-cta" data-act="goto-ledger">Follow it in the Ledger</button><button class="a-skip" data-act="order-close">Keep shopping</button></div></div>`;
+  }
+  const opts = [{id:'COD', label:'Cash on delivery'},{id:'UPI', label:'UPI or card'}];
+  const nudge = state.tier===2 && cp('nudge');
+  return `<div class="a-dim" data-act="order-close" data-self="1"><div class="a-sheet a-order"><div class="a-handle"></div>
+    <div class="a-sh"><b>Order summary</b><button class="x" data-act="order-close" aria-label="Close">×</button></div>
+    <dl><dt>${esc(p.name)}${shade?' · '+esc(shade.name):''}</dt><dd>${fmt(p.price)}</dd><dt>Delivery</dt><dd>Free</dd>${o.method==='UPI'&&nudge?`<dt>Online payment offer</dt><dd>−₹20</dd>`:''}<dt><b>Total</b></dt><dd>${fmt(p.price - (o.method==='UPI'&&nudge?20:0))}</dd></dl>
+    <div class="a-lbl">Payment</div>
+    ${opts.map(x=>`<button class="a-pay ${o.method===x.id?'is-on':''}" data-act="pay" data-m="${x.id}"><span class="rd"></span>${x.label}${x.id==='UPI'&&nudge?`<span class="nd">${esc(nudge)}</span>`:''}${x.id==='COD'&&state.tier>=3?'<span class="nd" style="color:#555;background:#f0f0f0">Default</span>':''}</button>`).join('')}
+    <button class="a-cta" data-act="place-order">» Buy at ${fmt(p.price - (o.method==='UPI'&&nudge?20:0))}</button>
+  </div></div>`;
+}
+
+/* =========================================================
+   RENDER: side panels (shopper tab)
+   ========================================================= */
+function renderControls(){
+  const p = PRODUCTS[state.productId];
+  const covLabel = {lipstick:`shade · tier A · ${demosFor('lipstick').length} demos`, shampoo:`hair type · tier A · ${demosFor('shampoo').length} demos`, serum: state.breaker ? 'skin type · tier B · inherited demos revoked' : `skin type · tier B · ${demosFor('serum').length} inherited demos`, liquid:'shade · tier C · no demo yet', bottle:'not a BPC product'};
+  const prof = state.profile;
+  document.getElementById('controls').innerHTML = `<h2>Who is opening this PDP?</h2><p class="lead">Change the tier and the product; the phone re-renders and the gate trace below updates.</p>
+    <div class="field"><label>Tier</label><div class="seg">${[1,2,3,4].map(t=>`<button class="${state.tier===t?'is-on':''}" data-act="tier" data-t="${t}">${TIERS[t].label}<span class="sub">${TIERS[t].sub || TIERS[t].city+' · '+TIERS[t].appLang}</span></button>`).join('')}</div></div>
+    <div class="field"><label>Product</label><div class="seg">${Object.values(PRODUCTS).map(x=>`<button class="${state.productId===x.id?'is-on':''}" data-act="product" data-p="${x.id}">${esc(x.name)}<span class="sub">${covLabel[x.id]}</span></button>`).join('')}</div></div>
+    <div class="field"><label class="switch"><input type="checkbox" data-act="returning" ${state.returning?'checked':''}> Returning beauty buyer (two past lipstick orders)</label><div class="small" style="margin:4px 0 0 48px">Only matters in Tier 1 and 2, where tone cannot be inferred from pincode or app language.</div></div>
+    <div class="field"><label>Saved profile</label>${prof ? `<div class="small">${prof.tone!=null ? 'Skin tone saved (never shown as a label) · ' : ''}${[prof.skin,prof.hair,prof.lang,prof.under].filter(Boolean).map(esc).join(' · ')||'tone only'} · ${prof.source==='asked'?'answered':'inferred after a skip'}</div><div style="margin-top:6px;display:flex;gap:6px"><button class="btn sm" data-act="open-quiz" data-from="edit">Edit</button><button class="btn sm danger" data-act="delete-profile">Delete</button></div>` : `<div class="small">Nothing saved yet. The quiz saves to the profile only when she finishes it; a skip saves nothing and infers instead.</div>`}</div>
+    <div class="field"><button class="btn sm" data-act="reset">Reset the whole prototype</button></div>`;
+}
+/* all five gates, so an early stop shows the rest as not reached rather than missing */
+const GATE_Q = ['Suitability category?', 'Cluster covered?', 'Attributes already known?', 'Inferable with confidence?', 'Ask, by tier, only on intent'];
+function renderTrace(){
+  const g = runGates();
+  document.getElementById('trace').innerHTML = `<h2>Decision on this PDP open</h2><p class="lead">The five gates from slide 9. Nobody is asked by default, and nothing renders without real proof behind it.</p>
+    <ol class="trace">${g.trace.map(s=>`<li class="fresh"><span class="g ${s.ans===true?'yes':s.ans===false?'no':'ask'}">${s.n}</span><div><div class="q">${esc(s.q)} <span class="small">${s.ans===true?'Yes':s.ans===false?'No':'Ask'}</span></div><div class="n">${esc(s.note)}</div></div></li>`).join('')}
+    <li><span class="g out">→</span><div><div class="q">${esc(g.label)}</div><div class="n">${g.outcome==='render' ? 'Never: a quiz on page load, a blocking pop-up, asking on a PDP with no demos, asking twice in a session, or showing a tone label.' : g.outcome==='tierC' ? 'Fallback: closest match on a sibling product, labelled as a different product; honest state beats a mismatched demo.' : 'The Proof Layer is scoped to suitability categories only.'}</div></div></li>${GATE_Q.slice(g.trace.length).map((q,i)=>`<li class="unreached"><span class="g">${g.trace.length+i+1}</span><div><div class="q"><s>${esc(q)}</s> <span class="small">not reached</span></div></div></li>`).join('')}</ol>`;
+}
+function renderTierInfo(){
+  const t = TIERS[state.tier];
+  document.getElementById('tierinfo').innerHTML = `<h2>What changes in ${t.label}</h2><p class="lead">Same attribute model for every tier; only the capture and the words change (slide 6).</p>
+    <dl class="kv"><dt>Who she is</dt><dd>${esc(t.who)}</dd><dt>Who convinces her</dt><dd>${esc(t.conv)}</dd><dt>Ask or infer</dt><dd>${esc(t.capture)}</dd><dt>Language and copy</dt><dd>${esc(t.copy)}</dd><dt>Trust cue</dt><dd>${esc(t.trust)}</dd><dt>Payment nudge</dt><dd>${esc(t.pay)}</dd><dt>Media</dt><dd>${esc(t.media)}</dd></dl>
+    <p class="small" style="margin-top:12px">Regional copy on the phone is illustrative and would be creator-approved before launch (roadmap, months 4 to 12).</p>`;
+}
+
+/* =========================================================
+   RENDER: creator tab
+   ========================================================= */
+function creatorPayouts(cid){
+  let paid = 0, pending = 0;
+  for(const e of state.ledger){ if(e.type!=='order' || !e.demoId) continue; const d = state.demos.find(x=>x.id===e.demoId); if(!d || d.creator!==cid) continue;
+    if(e.status==='paid') paid += e.payout; else if(e.eligible && (e.status==='placed'||e.status==='delivered')) pending += Math.round(e.amount*LINK_RATE*VT_SHARE); }
+  return {paid, pending};
+}
+function renderCreator(){
+  const c = C[state.creatorId];
+  const confirmed = !!state.tagConfirmed[c.id];
+  const myDemos = state.demos.filter(d=>d.creator===c.id);
+  const pay = creatorPayouts(c.id);
+  const baseVT = myDemos.reduce((s,d)=>s + d.orders*PRODUCTS[d.product].price*LINK_RATE*VT_SHARE, 0);
+  const baseLink = myDemos.reduce((s,d)=>s + Math.round(d.igViews*0.012)*PRODUCTS[d.product].price*LINK_RATE, 0);
+  document.getElementById('cr-profile').innerHTML = `<div class="cr-head">${avatar(c,56)}<div><div class="nm">${esc(c.name)} <span class="pill pink">Activated</span></div><div class="small">${esc(c.handle)} · ${esc(c.followers)} followers · ${c.reels} reels with Meesho links</div></div>
+    <select class="sel" style="margin-left:auto" data-change="creator">${CREATORS.map(x=>`<option value="${x.id}" ${x.id===c.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div>
+    <h3>Your profile for matching</h3><p class="small">Pre-filled from your existing reels and audio (v1). In v0 ops fills this sheet from the reels and you confirm. Private; shoppers only ever see “like you”.</p>
+    ${state.tagEdit ? `<div class="vec" style="gap:10px">
+      <label class="small">Tone <select class="sel" data-change="tag" data-k="tone">${TONES.map(t=>`<option value="${t.id}" ${c.tone===t.id?'selected':''}>Band ${t.id}</option>`).join('')}</select></label>
+      <label class="small">Skin <select class="sel" data-change="tag" data-k="skin">${['Oily','Dry','Combination','Normal'].map(o=>`<option ${c.skin===o?'selected':''}>${o}</option>`).join('')}</select></label>
+      <label class="small">Hair <select class="sel" data-change="tag" data-k="hair">${['Straight','Wavy','Curly'].map(o=>`<option ${c.hair===o?'selected':''}>${o}</option>`).join('')}</select></label>
+      <label class="small">Language <select class="sel" data-change="tag" data-k="lang">${['Hindi','Bhojpuri','Marathi','Tamil','Bengali','Kannada','Telugu','English'].map(o=>`<option ${c.lang===o?'selected':''}>${o}</option>`).join('')}</select></label>
+      <label class="small">Undertone <select class="sel" data-change="tag" data-k="under">${['Warm','Cool','Neutral'].map(o=>`<option ${c.under===o?'selected':''}>${o}</option>`).join('')}</select></label></div>
+      <button class="btn pink" data-act="tag-done">Save</button>`
+    : `<div class="vec"><span><i style="background:${TONES[c.tone-1].hex}"></i>Skin tone band (private)</span><span>${esc(c.under)} undertone</span><span>${esc(c.skin)} skin</span><span>${esc(c.hair)} hair</span><span>${esc(c.lang)}${c.lang2?' + '+esc(c.lang2):''} (from audio)</span><span>${esc(c.region)}</span></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">${confirmed ? `<span class="pill green">Confirmed</span>` : `<button class="btn pink" data-act="tag-confirm">Confirm in one tap</button>`}<button class="btn" data-act="tag-edit">Edit</button><button class="btn danger" data-act="tag-delete">Delete my data</button><span class="small">Confidence from reels: 0.91 tone · 0.87 hair · 0.96 language</span></div>`}`;
+
+  // attach
+  const mine = slotRate('lipstick', c.tone);
+  const prodOpts = BPC.map(pid=>PRODUCTS[pid]);
+  const sel = state.attach || {pid:'lipstick', type:'7day', shade:'04', sealed:true, skin:true, claims:true};
+  const sp = PRODUCTS[sel.pid];
+  const sr = slotRate(sel.pid, bandOf(c, sp.axis));
+  const fill = MATRIX_LANGS.filter(l => langMatch(c,l));
+  document.getElementById('cr-attach').innerHTML = `<h2>Attach a demo</h2><p class="lead">Every Meesho-linked beauty reel is mapped to its product cluster and passes a QC gate. You can only demo your own skin and hair, so the cell it fills is your band on the product's axis × your languages.</p>
+    <div class="small" style="border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin-bottom:12px"><b>Last reel, auto-mapped:</b> link <code>meesho.com/s/p/4k2x…</code> → Matte Lipstick · Rosewood (cluster C-10482), confidence 0.92, attached automatically. A second reel mapped at 0.58 went to human review (about a day).</div>
+    <div class="field"><label>Product in the reel</label><select class="sel" data-change="attach" data-k="pid">${prodOpts.map(x=>`<option value="${x.id}" ${sel.pid===x.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select>
+    ${sp.shades.length ? ` <select class="sel" data-change="attach" data-k="shade">${sp.shades.map(s=>`<option value="${s.code}" ${sel.shade===s.code?'selected':''}>${esc(s.code)} ${esc(s.name)}</option>`).join('')}</select>` : ''}
+    <select class="sel" data-change="attach" data-k="type">${Object.entries(TYPE_LABEL).map(([k,v])=>`<option value="${k}" ${sel.type===k?'selected':''}>${v}</option>`).join('')}</select></div>
+    <div class="field"><label>QC gate (auto-detected in v1, ticked by ops in v0)</label><ul class="qc">
+      <li><input type="checkbox" id="qc1" data-change="attach" data-k="sealed" ${sel.sealed?'checked':''}><label for="qc1">Sealed pack opened on camera (detected at 0:02)</label></li>
+      <li><input type="checkbox" id="qc2" data-change="attach" data-k="skin" ${sel.skin?'checked':''}><label for="qc2">Product on skin or hair for 5 seconds or more (0:05 to 0:13)</label></li>
+      <li><input type="checkbox" id="qc3" data-change="attach" data-k="claims" ${sel.claims?'checked':''}><label for="qc3">No medical claims in audio or captions (ASCI check)</label></li></ul></div>
+    <div class="small">This demo fills ${fill.length ? fill.map(l=>`<b>${esc(l)}</b>`).join(', ') : 'no listed language'} × your ${esc(AXES[sp.axis].label)}: ${esc(String(bandOf(c, sp.axis)))} on ${esc(sp.name)}. Slot status: <b>${sr.label}</b> (${sr.n} demos already in your band). Instagram-link earnings are never throttled.</div>
+    <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="btn pink" data-act="demo-submit">Submit for QC</button>${state.attachResult ? `<span class="${state.attachResult.ok?'ok':'bad'}">${esc(state.attachResult.msg)}</span>` : ''}</div>`;
+
+  // demo-wanted
+  const cells = wantedCells().slice(0,7);
+  document.getElementById('cr-wanted').innerHTML = `<h2>Demo-Wanted board</h2><p class="lead">Cells with views but fewer than two demos, priced by scarcity. Bounties and brand kits point at empty cells so nobody piles onto the same 50 viral products.</p>
+    <div class="wanted">${cells.map(w=>{ const fit = bandOf(c, w.axis)===w.band && langMatch(c, w.lang); return `<div class="wrow ${fit?'fit':''}">${w.axis==='tone' ? `<span class="face" style="background:${TONES[w.band-1].hex}" aria-label="tone band ${w.band}"></span>` : `<span class="face" style="background:var(--plum-soft);color:var(--plum-deep);display:grid;place-items:center;font-size:13px;font-weight:700" aria-label="${esc(bandLabel(w.axis, w.band))}">${esc(w.band[0])}</span>`}
+      <div><b>${esc(PRODUCTS[w.pid].name)}</b> · ${esc(w.lang)} <span class="pill grey">${esc(bandLabel(w.axis, w.band))}</span>${state.funded[w.key]?' <span class="pill orange">Brand kit available</span>':''}${fit?' <span class="pill pink">You fit this cell</span>':''}<div class="meta">${num(w.views)} views a month · ${w.demos} demo${w.demos===1?'':'s'} today</div></div>
+      <div style="text-align:right"><div class="bounty">${fmt(w.bounty)}</div>${state.funded[w.key] ? `<button class="btn sm" data-act="kit" data-key="${w.key}">Claim kit</button>` : `<span class="small">bounty</span>`}</div></div>`;}).join('')}</div>`;
+
+  // earnings
+  const rows = myDemos.map(d=>{ const p = PRODUCTS[d.product]; const vt = Math.round(d.orders*p.price*LINK_RATE*VT_SHARE); const extra = state.ledger.filter(e=>e.type==='order'&&e.demoId===d.id&&e.status==='paid').reduce((s,e)=>s+e.payout,0);
+    const rank = demosFor(d.product).filter(x=>bandOf(C[x.creator], p.axis)===bandOf(c, p.axis)).indexOf(state.demos.find(x=>x.id===d.id)); const sr2 = {rate: rank<2?1:rank<4?.5:0};
+    return `<tr><td>${esc(p.name)}${d.shade?' · '+esc(p.shades.find(s=>s.code===d.shade).name):''}<div class="small">${TYPE_LABEL[d.type]}${d.inherited?' · inherited to '+esc(p.seller):''}${d.fresh?' · just attached':''}</div></td><td>${num(d.pdpViews)}<div class="small">vs ${num(d.igViews)} on Instagram</div></td><td>${d.orders}</td><td><b>${fmt(vt+extra)}</b><div class="small">${sr2.rate===1?'full rate':sr2.rate===.5?'half rate':'no new view-through'}</div></td><td>${d.fresh? WINDOW_DAYS : Math.max(0, WINDOW_DAYS - 20 - (parseInt(d.id.slice(1))*3)%40)} days</td></tr>`; }).join('');
+  document.getElementById('cr-earn').innerHTML = `<h2>Earnings</h2><p class="lead">View-through commission at ${Math.round(VT_SHARE*100)}% of the link rate, paid weekly on delivered and not-returned orders. Your Instagram-link earnings sit beside it, untouched.</p>
+    <div class="kpis"><div class="kpi"><b>${fmt(baseVT + pay.paid)}</b><span>view-through, this month</span></div><div class="kpi"><b>${fmt(pay.pending)}</b><span>pending in return window</span></div><div class="kpi"><b>${fmt(baseLink)}</b><span>Instagram-link, this month</span></div><div class="kpi"><b>${myDemos.length?'Yes':'No'}</b><span>earning in month 2</span></div></div>
+    ${myDemos.length ? `<div class="tw"><table class="t"><tr><th>Demo</th><th>Views from PDP</th><th>Orders</th><th>Payout</th><th>Window left</th></tr>${rows}</table></div>` : `<p class="small">No demos attached yet. Attach one QC-passed demo to a top-500 PDP and the first weekly payout lands inside two weeks.</p>`}
+    <p class="small" style="margin-top:10px">Next payout run: Friday, through the Creator Club rails. ${pay.paid ? `Includes ${fmt(pay.paid)} released from the Ledger in this session.` : 'Buy something from a demo on the Shopper tab, deliver it in the Ledger, and the payout shows up here.'}</p>`;
+}
+
+/* =========================================================
+   RENDER: brand tab
+   ========================================================= */
+function renderBrand(){
+  const pid = state.brandProduct, p = PRODUCTS[pid], axis = p.axis || 'tone', A = AXES[axis];
+  const cov = coverage(pid);
+  const empties = [];
+  for(const b of A.bands) for(const l of MATRIX_LANGS){ if(cellDemos(pid,b,l).length<2 && cellViews(pid,b,l)>=3000) empties.push(1); }
+  const funded = Object.keys(state.funded).filter(k=>k.startsWith(pid+'|')).length;
+  const bands = A.bands.filter(b => demosFor(pid).filter(d=>bandOf(C[d.creator], axis)===b).length>=2).length;
+  let rows = '';
+  for(const b of A.bands){
+    rows += `<tr><th style="text-align:left">${axis==='tone' ? `<span style="display:inline-block;width:16px;height:16px;border-radius:50%;background:${TONES[b-1].hex};vertical-align:-3px;margin-right:4px"></span>${b}` : esc(b)}</th>`;
+    for(const l of MATRIX_LANGS){ const n = cellDemos(pid,b,l).length, v = cellViews(pid,b,l), key = `${pid}|${b}|${l}`;
+      const cls = n>=2?'c2':n===1?'c1':v>=3000?'c0':'cx';
+      rows += `<td><button class="cell ${cls} ${state.brandCell===key?'is-on':''} ${state.funded[key]?'funded':''}" data-act="cell" data-key="${key}" aria-label="${esc(bandLabel(axis,b))} ${l}: ${n} demos, ${v} views"><b>${n}</b><span>${num(v)} views</span></button></td>`; }
+    rows += '</tr>';
+  }
+  const unit = axis==='tone' ? 'tone band' : A.label;
+  document.getElementById('br-matrix').innerHTML = `<h2>Coverage dashboard · ${esc(A.label)} × language</h2><p class="lead">Which cells of cluster × ${esc(unit)} × language have views but no demo. Brands fund sample kits only into empty cells and recover the cost through fewer wrong-${axis==='tone'?'shade':'match'} returns.</p>
+    <div class="field" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><select class="sel" data-change="brandProduct">${BPC.map(x=>`<option value="${x}" ${pid===x?'selected':''}>${esc(PRODUCTS[x].name)} · cluster ${PRODUCTS[x].cluster}</option>`).join('')}</select><span class="small">${p.listings} seller listings collapsed into this cluster</span></div>
+    <div class="kpis"><div class="kpi"><b>${bands} of ${A.bands.length}</b><span>${axis==='tone' ? 'tone bands' : esc(A.label)+'s'} with 2+ demos</span></div><div class="kpi"><b>${Math.round(cov*100)}%</b><span>of views covered at ${axis==='tone' ? 'tone' : esc(A.label)} × language level</span></div><div class="kpi"><b>${empties.length}</b><span>cells with views and under 2 demos</span></div><div class="kpi"><b>${funded}</b><span>kits funded this session</span></div></div>
+    <div style="overflow-x:auto"><table class="matrix"><tr><th></th>${MATRIX_LANGS.map(l=>`<th>${l}</th>`).join('')}</tr>${rows}</table></div>
+    <div class="legend"><span><i style="background:var(--green-soft)"></i>covered (2+)</span><span><i style="background:var(--amber-soft)"></i>thin (1)</span><span><i style="background:var(--red-soft)"></i>empty with views</span><span><i style="background:#efe9ee"></i>low views, not worth funding</span><span><i style="box-shadow:inset 0 0 0 2px var(--orange)"></i>kit funded</span></div>`;
+
+  const key = state.brandCell;
+  let cell = `<h2>Fund a kit</h2><p class="lead">Pick a cell in the matrix.</p>`;
+  if(key){ const [kp, kb, kl] = key.split('|'); const ka = PRODUCTS[kp].axis || 'tone'; const b = ka==='tone' ? +kb : kb;
+    const n = cellDemos(kp,b,kl), v = cellViews(kp,b,kl), bo = cellBounty(kp,b,kl);
+    const sav = Math.round(v*0.03*PRODUCTS[kp].price*0.08*0.64*0.3); // views → orders → returns avoided (slide 4 logic, scaled to the cell)
+    const kit = ka==='tone' ? '3 to 5 shades so one creator covers a tone range, not one shade' : ka==='hair' ? 'Full-size bottle plus a travel size, so one creator can show wash one and wash three' : '2-week supply so the 7-day demo is real';
+    cell = `<h2>${esc(PRODUCTS[kp].name)} · ${esc(bandLabel(ka, b))} · ${esc(kl)}</h2><p class="lead">${num(v)} views a month, ${n.length} demo${n.length===1?'':'s'}.</p>
+      ${n.length ? `<div class="vec">${n.map(d=>`<span>${avatar(C[d.creator],18)} ${esc(C[d.creator].name)} · ${TYPE_LABEL[d.type]}</span>`).join('')}</div>` : ''}
+      <dl class="kv"><dt>Bounty on the board</dt><dd>${fmt(bo)}</dd><dt>Kit</dt><dd>${kit}</dd><dt>Returns avoided (est.)</dt><dd>about ${fmt(sav)} a month on this cell, from the slide 4 return logic</dd><dt>Status</dt><dd>${state.funded[key] ? '<span class="pill orange">Kit funded</span>' : n.length>=2 ? '<span class="pill green">Covered; nothing to fund</span>' : v<3000 ? '<span class="pill grey">Too few views to fund</span>' : '<span class="pill red">Empty, worth funding</span>'}</dd></dl>
+      <div style="margin-top:12px">${!state.funded[key] && n.length<2 && v>=3000 ? `<button class="btn orange" data-act="fund" data-key="${key}">Fund a kit for this cell</button>` : state.funded[key] ? `<button class="btn" data-act="unfund" data-key="${key}">Withdraw kit</button>` : ''}</div>`; }
+  document.getElementById('br-cell').innerHTML = cell;
+
+  const s = PRODUCTS.serum;
+  document.getElementById('br-breaker').innerHTML = `<h2>Trust controls</h2>
+    <h3>Return-rate circuit breaker</h3><p class="small">Inherited demos stay only inside manufacturer-verified clusters and only while the listing's returns stay under the cluster median.</p>
+    <dl class="kv" style="margin-top:8px"><dt>${esc(s.name)}</dt><dd>${esc(s.seller)}, inheriting from ${esc(s.inheritedFrom)}</dd><dt>Listing return rate</dt><dd>${state.breaker ? '<b class="bad">9.1%</b>' : s.returnRate+'%'} vs cluster median ${s.clusterMedian}%</dd><dt>Inheritance</dt><dd>${state.breaker ? '<span class="pill red">Revoked; PDP falls to the honest Tier C state</span>' : '<span class="pill green">Active, labelled “same product, different seller”</span>'}</dd></dl>
+    <div style="margin-top:10px"><button class="btn ${state.breaker?'':'danger'}" data-act="breaker">${state.breaker ? 'Returns back under the median' : 'Simulate a return spike to 9.1%'}</button> <span class="small">then open the serum on the Shopper tab</span></div>
+    <h3>“Didn’t suit my tone” is a routing signal</h3><p class="small">${state.routing} signal${state.routing===1?'':'s'} this session, each one surfacing the demo to other tone bands. Public negative ratings created: 0.</p>
+    <h3>Honest content, brand control</h3><p class="small">Demos attach only to seller-verified listings. The platform supplies the traffic, so view-through is paid from the existing affiliate pool at 50 to 70% of the link rate; listing prices and seller commission never move.</p>`;
+}
+
+/* =========================================================
+   RENDER: ledger tab
+   ========================================================= */
+function renderLedger(){
+  document.getElementById('ld-rules').innerHTML = `<h2>Attribution: what pays, what never pays</h2><p class="lead">Slide 5 rules, applied to every event this session. Day counter: ${state.day}.</p>
+    <div class="rules"><div class="rule pays"><b>Pays</b>Deliberate engagement (tap to play, 5-second watch or swatch expand) logged against user × cluster; order within 90 days; paid after delivery and the return window. Last-engaged demo wins.</div>
+    <div class="rule never"><b>Never pays</b>Autoplay impressions, views from the creator's own devices, repeat views from one device, orders returned or refused at the door.</div>
+    <div class="rule cap"><b>No double pay</b>An Instagram link click inside its window keeps today's attribution; view-through only fills the gap after it. Cap: one payout per user × cluster per 90 days.</div>
+    <div class="rule margin"><b>Margin-neutral</b>Funded from the existing affiliate pool at ${Math.round(VT_SHARE*100)}% of the link rate (${Math.round(LINK_RATE*100)}% here, illustrative). Listing prices never move; per-cluster caps protect contribution margin.</div></div>`;
+  const ev = state.ledger.map(e=>{
+    let main = '', acts = '';
+    if(e.type==='engagement'){ const d = state.demos.find(x=>x.id===e.demoId); main = `<b>${e.kind}</b> · ${esc(C[d.creator].name)}'s ${TYPE_LABEL[d.type]} on ${esc(PRODUCTS[d.product].name)}<div class="small">${esc(e.reason)}</div>`; }
+    else if(e.type==='question'){ main = `<b>Question</b> · ${e.kind}<div class="small">${esc(e.reason)}</div>`; }
+    else if(e.type==='order'){ const d = e.demoId ? state.demos.find(x=>x.id===e.demoId) : null;
+      main = `<b>Order ${e.orderId}</b> · ${esc(PRODUCTS[e.product].name)}${e.shade?' · '+esc(e.shade):''} · ${fmt(e.amount)} · ${e.method} · <span class="pill ${e.status==='paid'?'green':e.status==='returned'||e.status==='rto'?'red':e.status==='delivered'?'teal':'grey'}">${e.status}</span>
+        <div class="small">${d ? `Last-engaged demo: ${esc(C[d.creator].name)}. ` : ''}${esc(e.reason)}${e.status==='paid' ? `. Paid ${fmt(e.payout)} on day ${e.paidDay}.` : ''}</div>`;
+      if(e.status==='placed') acts = `<button class="btn sm" data-act="o" data-id="${e.id}" data-do="deliver">Deliver</button><button class="btn sm" data-act="o" data-id="${e.id}" data-do="rto">Refuse at door</button><button class="btn sm" data-act="o" data-id="${e.id}" data-do="return">Return</button>`;
+      if(e.status==='delivered') acts = `<button class="btn sm primary" data-act="o" data-id="${e.id}" data-do="release">End 7-day window</button><button class="btn sm" data-act="o" data-id="${e.id}" data-do="return">Return</button>`; }
+    const paysPill = e.type==='order' ? '' : `<span class="pill ${e.pays?'green':'red'}">${e.pays?'counts':'never pays'}</span>`;
+    return `<div class="ev"><span class="day">Day ${e.day}</span><div>${main}</div><div class="acts">${paysPill}${acts}</div></div>`; }).join('');
+  document.getElementById('ld-events').innerHTML = `<h2>Events this session</h2><p class="lead">Newest first. Orders placed on the Shopper tab land here; deliver or return them to see what gets paid.</p>${ev || '<p class="small">Nothing yet. On the Shopper tab, tap a demo, then » Buy.</p>'}`;
+  document.getElementById('ld-sim').innerHTML = `<h2>Things that never pay</h2><p class="lead">Log them to see the rule fire.</p>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><button class="btn" data-act="sim" data-k="autoplay">Autoplay impression, no tap</button><button class="btn" data-act="sim" data-k="self">View from the creator's own device</button><button class="btn" data-act="sim" data-k="farm">42 taps from one device in a minute</button></div>`;
+  const p = PRODUCTS[BPC.includes(state.productId) ? state.productId : 'lipstick'];
+  const ax = p.axis || 'tone', A = AXES[ax];
+  const rows = A.bands.map(b=>{ const s = slotRate(p.id, b); return `<tr><td>${ax==='tone' ? `<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${TONES[b-1].hex};vertical-align:-2px"></span> band ${b}` : esc(b)}</td><td>${s.n}</td><td>${s.rate===1?'<span class="pill green">full</span>':s.rate===.5?'<span class="pill amber">half</span>':'<span class="pill red">none</span>'}</td></tr>`; }).join('');
+  document.getElementById('ld-throttle').innerHTML = `<h2>Payout throttle on ${esc(p.name)}</h2><p class="lead">Full view-through for the first two demos per ${ax==='tone' ? 'tone band' : esc(A.label)} per cluster, half for the next two, none after. Bounties then point at the empty cells.</p><table class="t"><tr><th>${ax==='tone' ? 'Tone band' : esc(A.label.replace(/^./, x=>x.toUpperCase()))}</th><th>Demos</th><th>Next demo pays</th></tr>${rows}</table>`;
+}
+
+/* =========================================================
+   RENDER ALL + EVENTS
+   ========================================================= */
+function renderAll(){
+  const sc = document.getElementById('ascroll'); const top = sc ? sc.scrollTop : 0;
+  renderScreen(); renderControls(); renderTrace(); renderTierInfo();
+  const sc2 = document.getElementById('ascroll'); if(sc2) sc2.scrollTop = renderAll.pid===state.productId ? top : 0; renderAll.pid = state.productId;
+  renderCreator(); renderBrand(); renderLedger();
+  for(const v of ['shopper','creator','brand','ledger']){ document.getElementById('v-'+v).hidden = state.view!==v; }
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('is-on', b.dataset.view===state.view));
+  const pt = document.getElementById('ptoast'); pt.hidden = !(state.toast && state.view!=='shopper'); pt.textContent = state.toast || '';
+  addSlidePills(); markSpeaking();
+  if(tour.active) tour.reposition();
+}
+function openPlayer(demoId, kind){
+  const d = state.demos.find(x=>x.id===demoId); if(!d) return;
+  const dur = state.tier>=3 ? 6 : d.type==='swatch' ? 10 : 15;
+  state.player = {demoId, watched:0, dur, kind:kind||'tap', swatch:false, engaged:false};
+  if(kind!=='autoplay'){ engage(d,'tap-to-play'); state.player.engaged = true; }
+  clearInterval(openPlayer.t);
+  openPlayer.t = setInterval(()=>{ if(!state.player) return clearInterval(openPlayer.t); state.player.watched++; if(state.player.watched>=5 && !state.player.engaged){ engage(d,'5-second watch'); state.player.engaged = true; } if(state.player.watched>=state.player.dur) clearInterval(openPlayer.t); renderAll(); }, 1000);
+  renderAll();
+}
+function startQuiz(from){
+  if(state.tier===4 && from!=='edit'){ /* Tier 4: never asks on intent; tone optional via "Not my tone?" only */
+    const g = runGates(); if(g.outcome==='render' && g.source!=='ask'){ const m = matchDemos(state.productId, shopperVector()); if(from==='chip' && m.tiles[0]) return openPlayer(m.tiles[0].id); return; } }
+  const prev = state.profile || {};
+  state.quiz = {step:0, from, a:{tone:prev.tone??null, skin:prev.skin??null, hair:prev.hair??null, lang:prev.lang??null, under:prev.under??null}};
+  renderAll();
+}
+function finishQuiz(skipped){
+  const q = state.quiz; const t = TIERS[state.tier]; const axis = axisOf(PRODUCTS[state.productId]) || 'tone';
+  if(skipped && q.a[axis]==null){
+    if(state.tier>=3){ state.profile = null; saveProfile(); state.quiz = null; toast('Skipped. Matched from your language and pincode; nothing was saved.'); return; }
+    if(axis==='tone'){
+      state.profile = {tone:t.prior, skin:null, hair:null, lang:t.appLang, under:null, source:'inferred'}; saveProfile(); state.quiz = null;
+      toast('Skipped. We matched you from a regional estimate instead. “Not my tone?” fixes it any time.'); return; }
+    /* no regional prior for skin or hair type: remember the skip and match on language */
+    const prev = state.profile || {tone:null, skin:null, hair:null, lang:t.appLang, under:null, source:'inferred'};
+    state.profile = Object.assign({}, prev, {skipped: Array.from(new Set([...(prev.skipped||[]), axis]))}); saveProfile(); state.quiz = null;
+    toast(`Skipped. Matched on your language instead. “${cp('notMine')}” fixes it any time.`); return; }
+  const prof = {tone:q.a.tone ?? (axis==='tone' ? t.prior : null), skin:q.a.skin, hair:q.a.hair, lang:q.a.lang || t.appLang, under:q.a.under, source: q.a[axis]!=null ? 'asked' : 'inferred'};
+  state.profile = prof; saveProfile(); state.quiz = null; state.filterMine = q.from==='filter';
+  if(q.from==='chip'){ const m = matchDemos(state.productId, shopperVector()); if(m.tiles[0]) return openPlayer(m.tiles[0].id); }
+  toast(axis==='tone' ? 'Saved to your profile. Edit or delete it any time from “Not my tone?”.' : `Saved to your profile. Edit or delete it any time from “${cp('notMine')}”.`);
+}
+function buyFromPlayer(){
+  if(!state.player) return;
+  const d = state.demos.find(x=>x.id===state.player.demoId); state.player = null; clearInterval(openPlayer.t);
+  if(d.product===state.productId){ if(d.shade) state.shade = d.shade; state.order = {method: state.tier===1 ? 'UPI' : 'COD'}; renderAll(); }
+  else toast('That demo is on a different product; add it from its own page.');
+}
+document.addEventListener('click', e => {
+  if(state.tier===4) speakTap(e.target);   // Tier 4: say it, then do the normal action
+  const el = e.target.closest('[data-act]'); if(!el) return;
+  if(el.dataset.self && e.target!==el) return;  // dim backgrounds close only on direct click
+  const a = el.dataset.act;
+  switch(a){
+    case 'view': state.view = el.dataset.view; break;
+    case 'tier': state.tier = +el.dataset.t; state.filterMine = false; break;
+    case 'product': state.productId = el.dataset.p; state.shade = PRODUCTS[state.productId].defaultShade; state.filterMine = false; break;
+    case 'shade': state.shade = el.dataset.code; { const g = runGates(); if(g.outcome==='render' && g.source==='ask') return startQuiz('shade'); } break;
+    case 'delete-profile': state.profile = null; saveProfile(); state.quiz = null; state.filterMine = false; toast('Your saved answers were deleted.'); return;
+    case 'reset': if(confirm('Reset everything in this prototype?')){ try{ localStorage.removeItem('mj_profile'); localStorage.removeItem('mj_tour_seen'); }catch(err){} location.reload(); } return;
+    case 'open-chip': { const g = runGates(); if(g.source==='ask') return startQuiz('chip'); const m = matchDemos(state.productId, shopperVector()); if(m.tiles[0]) return openPlayer(m.tiles[0].id); break; }
+    case 'open-quiz': return startQuiz(el.dataset.from);
+    case 'quiz-pick': state.quiz.a[el.dataset.k] = el.dataset.k==='tone' ? +el.dataset.v : el.dataset.v; break;
+    case 'quiz-next': if(state.quiz.step < quizPlan().length-1) state.quiz.step++; else return finishQuiz(false); break;
+    case 'quiz-skip': return finishQuiz(true);
+    case 'quiz-close': state.quiz = null; break;
+    case 'open-demo': return openPlayer(el.dataset.id);
+    case 'player-close': state.player = null; clearInterval(openPlayer.t); break;
+    case 'swatch-expand': if(state.player){ state.player.swatch = true; const d = state.demos.find(x=>x.id===state.player.demoId); if(!state.player.engaged){ engage(d,'swatch expand'); state.player.engaged = true; } } break;
+    case 'swatch-close': if(state.player) state.player.swatch = false; break;
+    case 'didnt-suit': state.routing++; state.player = null; clearInterval(openPlayer.t); toast(`Thanks. This demo will be shown to shoppers of ${({tone:'other skin tones', skin:'other skin types', hair:'other hair types'})[PRODUCTS[state.productId].axis || 'tone']} instead. It is never posted as a rating.`); return;
+    case 'buy-from-player': return buyFromPlayer();
+    case 'filter': state.filterMine = el.dataset.on==='1'; break;
+    case 'puchho-open': state.puchho = state.puchho || {items:[]}; break;
+    case 'puchho-close': state.puchho = null; break;
+    case 'puchho-ask': answer(el.dataset.q); break;
+    case 'add-cart': toast('Added to cart. In the pilot we watch direct-buy share and AOV as guardrails.'); return;
+    case 'buy-now': state.order = {method: state.tier===1 ? 'UPI' : 'COD'}; break;
+    case 'pay': state.order.method = el.dataset.m; break;
+    case 'place-order': { const ev = placeOrder(state.order.method==='UPI' ? 'prepaid' : 'cash on delivery'); state.order = {placed:ev.id}; break; }
+    case 'order-close': state.order = null; break;
+    case 'goto-ledger': state.order = null; state.view = 'ledger'; break;
+    case 'o': orderAction(el.dataset.id, el.dataset.do); break;
+    case 'sim': { const d = state.demos.find(x=>x.product===state.productId) || state.demos[0];
+      if(el.dataset.k==='autoplay') logEvent({type:'engagement', pays:false, demoId:d.id, kind:'autoplay impression', reason:'Autoplay impressions never pay'});
+      if(el.dataset.k==='self') logEvent({type:'engagement', pays:false, demoId:d.id, kind:'own-device view', reason:"Views from the creator's own devices never pay; device de-duplication"});
+      if(el.dataset.k==='farm') logEvent({type:'engagement', pays:false, demoId:d.id, kind:'anomaly: 42 taps / minute', reason:'Anomaly detection holds the payout for review'});
+      break; }
+    case 'tag-confirm': state.tagConfirmed[state.creatorId] = true; toast(`${C[state.creatorId].name}'s profile confirmed. Shoppers see “like you”, never a label.`); return;
+    case 'tag-edit': state.tagEdit = true; break;
+    case 'tag-done': state.tagEdit = false; break;
+    case 'tag-delete': state.tagConfirmed[state.creatorId] = false; toast('Attribute data deleted. Her demos stay live but drop out of skin matching until she re-confirms.'); return;
+    case 'demo-submit': {
+      const c = C[state.creatorId]; const sel = state.attach || {pid:'lipstick', type:'7day', shade:'04', sealed:true, skin:true, claims:true};
+      if(!sel.sealed) state.attachResult = {ok:false, msg:'Not eligible: open the sealed pack on camera and re-upload.'};
+      else if(!sel.skin) state.attachResult = {ok:false, msg:'Not eligible: the product must be on skin for at least 5 seconds.'};
+      else if(!sel.claims) state.attachResult = {ok:false, msg:'Not eligible: remove the medical claim (ASCI). Describe what you saw, not what it treats.'};
+      else { const p = PRODUCTS[sel.pid]; const sr = slotRate(sel.pid, bandOf(c, p.axis));
+        state.demos.push({id:'d'+(100+ ++seq), product:sel.pid, creator:c.id, type:sel.type, shade: p.shades.length ? sel.shade : null, pdpViews:0, igViews:0, orders:0, fresh:true});
+        state.attachResult = {ok:true, msg:`Attached to ${p.name} (cluster ${p.cluster}) at ${sr.label}. It is live on matched PDPs now; check the Shopper tab and the Brand matrix.`}; }
+      break; }
+    case 'kit': toast('Kit requested. The brand ships 3 to 5 shades; you demo the range, not one shade.'); return;
+    case 'cell': state.brandCell = el.dataset.key; break;
+    case 'fund': state.funded[el.dataset.key] = true; toast('Kit funded. It now shows as available on the Creator tab’s Demo-Wanted board.'); return;
+    case 'unfund': delete state.funded[el.dataset.key]; break;
+    case 'breaker': state.breaker = !state.breaker; break;
+    case 'returning': return; // handled on change
+    case 'addl': state.addl = !state.addl; break;
+    case 'deck-slide': { const dm = document.querySelector('.deckmap'); if(dm){ dm.open = true; dm.scrollIntoView({behavior:'smooth', block:'start'}); } return; }
+    case 't4-share': toast('Demo link ready to forward on WhatsApp (mock)'); return;
+    case 't4-call': toast('Call-back requested; a creator in Bhojpuri will call (mock)'); return;
+  }
+  renderAll();
+});
+document.addEventListener('change', e => {
+  const el = e.target.closest('[data-act],[data-change]'); if(!el) return;
+  if(el.dataset.act==='returning'){ state.returning = el.checked; renderAll(); return; }
+  const k = el.dataset.change;
+  if(k==='creator'){ state.creatorId = el.value; state.tagEdit = false; state.attachResult = null; }
+  else if(k==='tag'){ const c = C[state.creatorId]; const f = el.dataset.k; c[f] = f==='tone' ? +el.value : el.value; state.tagConfirmed[c.id] = false; }
+  else if(k==='attach'){ state.attach = state.attach || {pid:'lipstick', type:'7day', shade:'04', sealed:true, skin:true, claims:true}; const f = el.dataset.k; state.attach[f] = el.type==='checkbox' ? el.checked : el.value; if(f==='pid'){ const p = PRODUCTS[el.value]; state.attach.shade = p.defaultShade; } state.attachResult = null; }
+  else if(k==='brandProduct'){ state.brandProduct = el.value; state.brandCell = null; }
+  renderAll();
+});
+document.addEventListener('submit', e => {
+  const f = e.target.closest('[data-form="puchho"]'); if(!f) return; e.preventDefault();
+  const inp = f.querySelector('input[name=q]'); const q = inp.value.trim(); if(!q) return; answer(q); inp.value = ''; renderAll();
+});
+/* =========================================================
+   DECK CHIPS, TIER 4 AUDIO, KEYBOARD
+   ========================================================= */
+const SLIDE_OF = {controls:6, trace:9, tierinfo:6, 'cr-profile':5, 'cr-attach':5, 'cr-wanted':8, 'cr-earn':5, 'br-matrix':8, 'br-cell':5, 'br-breaker':8, 'ld-rules':5, 'ld-events':5, 'ld-sim':5, 'ld-throttle':7};
+function addSlidePills(){
+  for(const id in SLIDE_OF){
+    const panel = document.getElementById(id); if(!panel) continue;
+    const h = panel.querySelector('h2') || panel.querySelector('h3');   // cr-profile has no h2; its first heading is an h3
+    if(!h || h.querySelector('.slide-pill')) continue;
+    h.insertAdjacentHTML('afterbegin', `<button class="slide-pill" type="button" data-act="deck-slide" title="Open the deck map">Slide ${SLIDE_OF[id]}</button>`);
+  }
+}
+const SPEAK_SEL = {chip:'#screen .a-chip', title:'#screen .a-mtitle', notMine:'#screen [data-act="open-quiz"][data-from="edit"]', q:'#screen .a-q'};
+function speak(text, key){
+  try{
+    const ss = window.speechSynthesis;
+    if(!ss || typeof SpeechSynthesisUtterance==='undefined') return;
+    const clean = String(text).replace(/[\u{1F000}-\u{1FAFF}\u{2190}-\u{21FF}\u{2300}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{200D}]/gu, '').replace(/\s+/g, ' ').trim();
+    if(!clean) return;
+    ss.cancel();
+    const u = new SpeechSynthesisUtterance(clean); u.lang = 'hi-IN'; u.rate = 0.95;
+    u.onend = u.onerror = () => { if(state.speaking===key){ state.speaking = null; renderAll(); } };
+    state.speaking = key; ss.speak(u); markSpeaking();
+  }catch(err){ state.speaking = null; }
+}
+function speakTap(target){
+  for(const key in SPEAK_SEL){
+    const el = target.closest(SPEAK_SEL[key]); if(!el) continue;
+    const text = key==='chip' ? cp('chip') : key==='notMine' ? cp('notMine') : el.textContent;
+    speak(text, key); return;
+  }
+}
+function markSpeaking(){
+  if(!state.speaking) return;
+  const el = document.querySelector(SPEAK_SEL[state.speaking]);
+  if(el && !el.querySelector('.spk')) el.insertAdjacentHTML('beforeend', '<span class="spk" aria-hidden="true">🔊</span>');
+}
+document.addEventListener('keydown', e => {
+  if(e.key!=='Escape' || e.defaultPrevented || tour.active) return;   // the tour handles its own Esc
+  if(state.player){ state.player = null; clearInterval(openPlayer.t); }
+  else if(state.quiz) state.quiz = null;
+  else if(state.order) state.order = null;
+  else if(state.puchho) state.puchho = null;
+  else return;
+  e.preventDefault(); renderAll();
+});
+
+/* =========================================================
+   GUIDED TOUR ("Judge mode"): the prototype drives itself in about 2 minutes
+   ========================================================= */
+function tourOrderId(){ if(tour.orderId) return tour.orderId; const o = state.ledger.find(e=>e.type==='order'); return o ? o.id : null; }
+function tourClipRect(el){
+  const b = el.getBoundingClientRect(); let l = b.left, t = b.top, r = b.right, btm = b.bottom;
+  for(let a = el.parentElement; a && a!==document.body && a!==document.documentElement; a = a.parentElement){
+    const cs = getComputedStyle(a);
+    if(cs.overflowX!=='visible' || cs.overflowY!=='visible'){ const ab = a.getBoundingClientRect(); l = Math.max(l, ab.left); t = Math.max(t, ab.top); r = Math.min(r, ab.right); btm = Math.min(btm, ab.bottom); }
+  }
+  return {l, t, w:r-l, h:btm-t};
+}
+const TOUR_STEPS = [
+  {kind:'welcome', title:`Meri Jaisi Proof Layer · 2-minute guided demo`,
+   text:`Press Next and the prototype drives itself: a shopper sees proof on skin like hers, buys, and the creator gets paid only when the order is delivered and kept. You can take over at any time.`,
+   note:`Starting the demo resets this session.`,
+   before(){
+     state.view='shopper'; state.tier=2; state.productId='lipstick'; state.shade='04';
+     state.profile=null; saveProfile(); state.returning=false; state.breaker=false; state.filterMine=false;
+     state.quiz=state.player=state.puchho=state.order=null; clearInterval(openPlayer.t);
+     /* fresh attribution session, so the payout replays on every run (cap: one payout per user × cluster) */
+     state.demos=BASE_DEMOS.slice(); state.ledger=[]; state.seen=new Set(); state.lastEngaged={}; state.paidCluster={}; state.impressionsLogged=new Set(); state.day=1; state.attachResult=null;
+     state.toast=null; clearTimeout(toast.t); state.addl=false; state.speaking=null;
+     renderAll(); }},
+  {view:'shopper', target:'#screen .a-chip', title:`Nothing is asked on page load.`,
+   text:`The chip on the product image is the only invitation. No quiz, no pop-up, no blocker (slide 9, gate 5).`,
+   next(){ startQuiz('chip'); }},
+  {view:'shopper', target:'#screen .a-sheet', title:`A 3-tap quiz, opened on intent.`,
+   text:`Tap 1 is a face on a 6-band scale, never a label; the UI only ever says 'like you'. Language is pre-filled from the app.`,
+   next(){ if(!state.quiz) startQuiz('chip'); if(!state.quiz) return;
+     state.quiz.a={tone:3, skin:'Oily', hair:'Wavy', lang:'Hindi', under:null}; state.quiz.step=quizPlan().length-1; finishQuiz(false); }},
+  {view:'shopper', target:'#screen .a-player', title:`The demo, and the QC gate.`,
+   text:`Sealed pack opens at 0:02, product on skin from 0:05: the two things a demo must show to be eligible to earn. Tap-to-play counts as deliberate engagement; autoplay never does.`,
+   next(){ buyFromPlayer(); }},
+  {view:'shopper', target:'#screen .a-sheet', title:`She pays cash on delivery, like 72–77% of Meesho orders.`,
+   text:`A prepaid nudge appears only after a match. Place the order.`,
+   next(){ if(!state.order || state.order.placed) return; const ev=placeOrder('cash on delivery'); state.order={placed:ev.id}; tour.orderId=ev.id; renderAll(); }},
+  {view:'shopper', target:'#screen .a-attrib', title:`Attribution is named on the confirmation.`,
+   text:`Last-engaged demo wins. Nothing is paid yet: payout waits for delivery plus the 7-day return window.`,
+   next(){ state.order=null; state.view='ledger'; renderAll(); }},
+  {view:'ledger', target:'#ld-events .ev:first-of-type', title:`The order lands in the ledger as 'placed'.`,
+   text:`Deliver it.`,
+   next(){ const id=tourOrderId(); if(id) orderAction(id, 'deliver'); renderAll(); }},
+  {view:'ledger', target:'#ld-events .ev:first-of-type', title:`Delivered. Now the 7-day return window.`,
+   text:`End it. If she had returned or refused at the door, nothing would pay.`,
+   next(){ const id=tourOrderId(); if(id) orderAction(id, 'release'); renderAll(); }},
+  {view:'ledger', target:'#ld-events .ev:first-of-type', title:`₹12 released to the creator.`,
+   text:`60% of the link rate on ₹199, paid in Friday's run through Creator Club rails, from the existing affiliate pool. Listing price never moved.`,
+   next(){ const o=state.ledger.find(e=>e.id===tourOrderId()); const d=o && o.demoId ? state.demos.find(x=>x.id===o.demoId) : null;
+     if(d) state.creatorId=C[d.creator].id; state.view='creator'; renderAll(); }},
+  {view:'creator', target:'#cr-earn', title:`Her earnings include that ₹12.`,
+   text:`Demos earn on Meesho's traffic for 90 days, not on her follower count. This is the Activated → Power bridge.`},
+  {view:'creator', target:'#cr-wanted', title:`Where new supply should go.`,
+   text:`The Demo-Wanted board prices empty cells by scarcity, and the payout throttle (full → half → none per tone band) stops everyone demoing the same 50 viral products.`,
+   next(){ state.view='brand'; state.brandProduct='lipstick'; renderAll(); }},
+  {view:'brand', target:'#br-matrix', title:`What the brand sees.`,
+   text:`The coverage matrix: tone band × language cells with views but no demo. Brands fund sample kits only into red cells and recover the cost through fewer wrong-shade returns.`},
+  {view:'brand', target:'#br-breaker', title:`Trust control on inherited demos.`,
+   text:`The serum inherits demos from a manufacturer-verified sibling listing. Trip the return-rate circuit breaker.`,
+   next(){ state.breaker=true; state.view='shopper'; state.productId='serum'; state.shade=null; renderAll(); }},
+  {view:'shopper', target:'#screen .a-module', title:`Honest 'no demo yet'.`,
+   text:`Inheritance is revoked, so the PDP says so instead of showing a mismatched demo, and a bounty auto-posts. A missing demo said honestly beats a wrong one.`,
+   /* profile cleared so Tier 4 is matched by inference, not by the answers saved in step 2 */
+   next(){ state.breaker=false; state.tier=4; state.productId='lipstick'; state.shade='04'; state.profile=null; saveProfile(); state.filterMine=false; renderAll(); }},
+  {view:'shopper', target:'#screen .a-module', title:`Tier 4: nothing asked.`,
+   text:`Matched from the app language (Hindi) and the pincode (Siwan, Bhojpuri belt), so Bhojpuri creators rank first; audio prompts over text, a 6-second clip, and a swatch-strip image when video will not load on 2G.`,
+   next(){ state.tier=2; state.productId='shampoo'; state.shade=null; renderAll(); }},
+  {view:'shopper', target:'#screen .a-module', title:`Same model, different attribute.`,
+   text:`A shampoo matches on hair type, not skin tone: the quiz leads with hair, the coverage matrix is hair type × language, the throttle runs per hair band. Gate 1 in the deck says “shade, skin-type or hair-type product”; this is the hair-type case.`,
+   next(){ state.productId='bottle'; state.shade=null; renderAll(); }},
+  {view:'shopper', target(){ const el=document.querySelector('#screen .a-plain'); return el ? el.closest('.a-sec') : null; },
+   title:`Gate 1: the Proof Layer stays out of non-beauty PDPs.`,
+   text:`That is the whole loop: proof at the point of decision, paid on delivered conversions, scaled by cluster, honest where it has no proof.`},
+  {kind:'end', title:`That's the 2-minute version.`,
+   text:`Explore freely: switch tiers and products, attach a demo as a creator, fund a kit as a brand, or try a returned order in the ledger. Reset restores everything.`},
+];
+const tour = {
+  active:false, i:0, done:new Set(), orderId:null, token:0, waiting:false, raf:0, needFocus:false,
+  root:null, spot:null, card:null,
+  init(){
+    this.root = document.getElementById('tour'); this.spot = this.root.querySelector('.tour-spot'); this.card = this.root.querySelector('.tour-card');
+    this.card.addEventListener('click', e => {
+      const b = e.target.closest('[data-tour]'); if(!b) return; const a = b.dataset.tour;
+      if(a==='next') this.next(); else if(a==='back') this.back(); else if(a==='stop') this.stop();
+      else if(a==='restart') this.start(); else if(a==='finish') this.stop(true);
+      else if(a==='deck'){ this.stop(true); const d = document.querySelector('.deckmap'); if(d){ d.open = true; d.scrollIntoView({behavior:'smooth', block:'start'}); } }
+    });
+    window.addEventListener('resize', () => this.reposition());
+    window.addEventListener('scroll', () => this.reposition(), true);
+    document.addEventListener('keydown', e => {
+      if(!this.active) return;
+      if(e.key==='Escape'){ e.preventDefault(); this.stop(); }
+      else if(e.key==='ArrowRight'){ e.preventDefault(); this.next(); }
+      else if(e.key==='ArrowLeft'){ e.preventDefault(); if(!TOUR_STEPS[this.i].kind) this.back(); }
+    });
+    document.addEventListener('focusin', e => { if(this.active && !this.card.contains(e.target)){ const f = this.card.querySelector('.btn.primary'); if(f) f.focus({preventScroll:true}); } });
+    document.getElementById('tour-btn').addEventListener('click', () => this.start());
+  },
+  open(){ try{ localStorage.setItem('mj_tour_seen', '1'); }catch(e){} this.active = true; this.root.hidden = false; },
+  start(){ this.open(); this.done = new Set(); this.orderId = null; this.go(0); },
+  stop(finish){
+    this.active = false; this.token++; this.waiting = false; cancelAnimationFrame(this.raf); this.root.hidden = true;
+    if(finish){ state.tier = 2; state.productId = 'lipstick'; state.shade = '04'; state.filterMine = false; renderAll(); }
+  },
+  target(s){
+    if(!s.target) return null;
+    const el = typeof s.target==='function' ? s.target() : document.querySelector(s.target);
+    if(!el) return null; const r = el.getBoundingClientRect(); return (r.width || r.height) ? el : null;
+  },
+  go(n, fromBack){
+    const s = TOUR_STEPS[n]; if(!s) return;
+    if(!this.active) this.open();
+    this.i = n; const my = ++this.token; this.waiting = true;
+    try{ if(!fromBack && s.before) s.before(); }catch(err){ console.error(err); }
+    if(s.view && state.view!==s.view){ state.view = s.view; renderAll(); }
+    this.renderCard();
+    const t0 = performance.now();
+    const look = () => {
+      if(my!==this.token || !this.active) return;
+      const el = this.target(s);
+      if(el || !s.target || performance.now()-t0 > 600){
+        this.waiting = false;
+        if(el) el.scrollIntoView({block:'center', behavior:'smooth'});
+        this.reposition(); return;
+      }
+      requestAnimationFrame(look);
+    };
+    look();
+  },
+  next(){
+    if(this.i >= TOUR_STEPS.length-1) return this.stop(true);
+    const s = TOUR_STEPS[this.i];
+    if(s.next && !this.done.has(this.i)){ this.done.add(this.i); try{ s.next(); }catch(err){ console.error(err); } }
+    this.go(this.i+1);
+  },
+  back(){ if(this.i > 0) this.go(this.i-1, true); },
+  renderCard(){
+    const s = TOUR_STEPS[this.i], n = this.i, total = TOUR_STEPS.length-2;
+    let acts;
+    if(s.kind==='welcome') acts = `<span class="sp"></span><button class="btn" data-tour="stop">Explore on my own</button><button class="btn primary" data-tour="next">Start</button>`;
+    else if(s.kind==='end') acts = `<span class="sp"></span><button class="btn" data-tour="restart">Restart tour</button><button class="btn primary" data-tour="finish">Explore</button>`;
+    else acts = `<button class="tour-link" data-tour="stop">Skip tour</button><span class="sp"></span><button class="btn" data-tour="back">Back</button><button class="btn primary" data-tour="next">Next</button>`;
+    this.card.innerHTML = `${s.kind ? '' : `<div class="tour-count">${n} / ${total}</div>`}<h3 id="tour-title">${esc(s.title)}</h3><p>${esc(s.text)}</p>${s.note ? `<p class="tour-note">${esc(s.note)}</p>` : ''}<div class="tour-acts">${acts}</div>`
+      + (s.kind==='end' ? `<button class="tour-link tour-deck" data-tour="deck">Where each screen comes from in the deck</button>` : '')
+      + (!s.kind && n>=2 ? `<div class="tour-foot">Back shows the previous note; actions are not undone.</div>` : '');
+    this.card.style.visibility = 'hidden'; this.needFocus = true;
+  },
+  reposition(){
+    if(!this.active || this.waiting) return;
+    cancelAnimationFrame(this.raf); this.raf = requestAnimationFrame(() => this.layout());
+  },
+  layout(){
+    if(!this.active) return;
+    const s = TOUR_STEPS[this.i], el = this.target(s), card = this.card, spot = this.spot;
+    const vw = window.innerWidth, vh = window.innerHeight, mobile = vw < 640;
+    let r = el ? tourClipRect(el) : null;
+    if(r && (r.w<=0 || r.h<=0)) r = null;
+    if(r){ const pad = 6; r = {l:r.l-pad, t:r.t-pad, w:r.w+2*pad, h:r.h+2*pad};
+      spot.hidden = false; spot.style.left = r.l+'px'; spot.style.top = r.t+'px'; spot.style.width = r.w+'px'; spot.style.height = r.h+'px';
+      this.root.classList.remove('nospot');
+    } else { spot.hidden = true; this.root.classList.add('nospot'); }
+    card.classList.toggle('sheet', mobile); card.classList.toggle('center', !mobile && !r);
+    if(mobile || !r){ card.style.left = ''; card.style.top = ''; }
+    else {
+      const cw = card.offsetWidth, ch = card.offsetHeight, g = 14, m = 12;
+      const clamp = (v, lo, hi) => Math.max(lo, Math.min(v, hi));
+      let left, top;
+      if(r.l + r.w + g + cw <= vw - m){ left = r.l + r.w + g; top = clamp(r.t, m, vh - ch - m); }
+      else if(r.t + r.h + g + ch <= vh - m){ top = r.t + r.h + g; left = clamp(r.l, m, vw - cw - m); }
+      else if(r.t - g - ch >= m){ top = r.t - g - ch; left = clamp(r.l, m, vw - cw - m); }
+      else if(r.l - g - cw >= m){ left = r.l - g - cw; top = clamp(r.t, m, vh - ch - m); }
+      else { left = vw - cw - m; top = vh - ch - m; }
+      card.style.left = left+'px'; card.style.top = top+'px';
+    }
+    card.style.visibility = '';
+    if(this.needFocus){ this.needFocus = false; const f = card.querySelector('.btn.primary'); if(f) f.focus({preventScroll:true}); }
+  },
+};
+tour.init();
+renderAll();
+window.MJ = state;
+window.MJ.tour = {start:() => tour.start(), stop:() => tour.stop(), go:n => tour.go(n)};
+(function(){
+  const q = new URLSearchParams(location.search); let seen = false;
+  try{ seen = !!localStorage.getItem('mj_tour_seen'); }catch(e){}
+  if(q.has('tour') || (!q.has('notour') && !seen)) tour.start();
+})();
+</script>
+</body>
+</html>
