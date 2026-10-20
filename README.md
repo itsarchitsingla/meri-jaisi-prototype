@@ -1,4 +1,4 @@
-# Meri Jaisi Proof Layer — interactive prototype
+# Meri Jaisi Proof Layer - interactive prototype
 
 **Meesho DICE Challenge S3 · Business Track · Prototype Submission Round**
 Archit Singla · Abhinav Sagar
