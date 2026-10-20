@@ -1907,7 +1907,16 @@ const tour = {
     if(s.next && !this.done.has(this.i)){ this.done.add(this.i); try{ s.next(); }catch(err){ console.error(err); } }
     this.go(this.i+1);
   },
-  back(){ if(this.i > 0) this.go(this.i-1, true); },
+  back(){ if(this.i > 1) this.rewindTo(this.i-1); else this.go(0); },
+  /* Back rewinds the page too: reset the session, replay steps 1..n-1, then show step n */
+  rewindTo(n){
+    this.token++; clearInterval(openPlayer.t); tour.orderId = null;
+    TOUR_STEPS[0].before();
+    for(let j = 1; j < n; j++){ const s = TOUR_STEPS[j]; if(s.next){ try{ s.next(); }catch(err){ console.error(err); } } }
+    state.toast = null; clearTimeout(toast.t);
+    this.done = new Set(Array.from({length: Math.max(0, n-1)}, (_, k) => k+1));
+    this.go(n, true);
+  },
   renderCard(){
     const s = TOUR_STEPS[this.i], n = this.i, total = TOUR_STEPS.length-2;
     let acts;
@@ -1915,8 +1924,7 @@ const tour = {
     else if(s.kind==='end') acts = `<span class="sp"></span><button class="btn" data-tour="restart">Restart tour</button><button class="btn primary" data-tour="finish">Explore</button>`;
     else acts = `<button class="tour-link" data-tour="stop">Skip tour</button><span class="sp"></span><button class="btn" data-tour="back">Back</button><button class="btn primary" data-tour="next">Next</button>`;
     this.card.innerHTML = `${s.kind ? '' : `<div class="tour-count">${n} / ${total}</div>`}<h3 id="tour-title">${esc(s.title)}</h3><p>${esc(s.text)}</p>${s.note ? `<p class="tour-note">${esc(s.note)}</p>` : ''}<div class="tour-acts">${acts}</div>`
-      + (s.kind==='end' ? `<button class="tour-link tour-deck" data-tour="deck">Where each screen comes from in the deck</button>` : '')
-      + (!s.kind && n>=2 ? `<div class="tour-foot">Back shows the previous note; actions are not undone.</div>` : '');
+      + (s.kind==='end' ? `<button class="tour-link tour-deck" data-tour="deck">Where each screen comes from in the deck</button>` : '');
     this.card.style.visibility = 'hidden'; this.needFocus = true;
   },
   reposition(){
