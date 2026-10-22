@@ -1712,7 +1712,7 @@ document.addEventListener('click', e => {
   renderAll();
 });
 document.addEventListener('change', e => {
-  const el = e.target.closest('[data-act],[data-change]'); if(!el) return;
+  const el = e.target.closest('[data-change],[data-act="returning"]'); if(!el) return;   // only our own controls; a typing box must not trigger a redraw
   if(el.dataset.act==='returning'){ state.returning = el.checked; renderAll(); return; }
   const k = el.dataset.change;
   if(k==='creator'){ state.creatorId = el.value; state.tagEdit = false; state.attachResult = null; }
